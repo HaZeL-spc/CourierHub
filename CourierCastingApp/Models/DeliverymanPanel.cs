@@ -1,18 +1,30 @@
-﻿namespace CourierCastingApp.Models
-{
-    public class DeliverymanPanel
-    {
-        private Dictionary<int, Delivery> Deliveries = new Dictionary<int, Delivery>();
+﻿using CourierCastingApp.Helpers;
+using Microsoft.CodeAnalysis;
 
-        public IReadOnlyList<Delivery> GetDeliveries()
+namespace CourierCastingApp.Models;
+
+public class DeliverymanPanel
+{
+
+    public async Task<IReadOnlyList<Delivery>?> GetDeliveries()
+    {
+        // delete it! temporary solution (need to configure ssl connection!)
+        HttpClientHandler clientHandler = new HttpClientHandler();
+        clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+        using (HttpClient client = new HttpClient(clientHandler))
         {
-            return Deliveries.Values.ToList().AsReadOnly();
+            HttpResponseMessage response = await client.GetAsync("https://courierapi/api/Deliveries");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                List<Delivery>? delivery = await response.Content.ReadFromJsonAsync<List<Delivery>>();
+                return delivery == null ? new List<Delivery>() { }.AsReadOnly() : delivery.AsReadOnly();
+            }
+            return new List<Delivery>();
         }
-        public void Modify(int Id, Delivery delivery)
-        {
-            Delivery? deliveryToModify;
-            if (Deliveries.TryGetValue(Id, out deliveryToModify))
-                deliveryToModify = delivery;
-        }
+    }
+    public void Modify(int Id, Delivery delivery)
+    {
     }
 }
