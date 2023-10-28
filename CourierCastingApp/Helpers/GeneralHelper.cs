@@ -7,4 +7,11 @@
         Delivered,
         Cancelled
     }
+
+    public enum ClientStatus
+    {
+        Client,
+        Courrier,
+        OfficeWorker
+    }
 }

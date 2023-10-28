@@ -9,12 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\DeliverymanPanel\**" />
+    <Compile Remove="Views\Shared\NavigationBars\**" />
+    <Content Remove="Views\DeliverymanPanel\**" />
+    <Content Remove="Views\Shared\NavigationBars\**" />
+    <EmbeddedResource Remove="Views\DeliverymanPanel\**" />
+    <EmbeddedResource Remove="Views\Shared\NavigationBars\**" />
+    <None Remove="Views\DeliverymanPanel\**" />
+    <None Remove="Views\Shared\NavigationBars\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\NavigationBarController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\DeliverymanPanel\" />
+    <Folder Include="Views\Shared\Nowy folder\" />
   </ItemGroup>
 
 </Project>
