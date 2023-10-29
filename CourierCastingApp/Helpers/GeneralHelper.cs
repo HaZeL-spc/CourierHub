@@ -11,7 +11,7 @@
     public enum ClientStatus
     {
         Client,
-        Courrier,
+        Courier,
         OfficeWorker
     }
 }

@@ -18,10 +18,9 @@ namespace CourierCastingApp.ViewComponents
                     new NavBarViewModel { Text = "Start", Url = "/", ControllerName = "Home"},
                     new NavBarViewModel { Text = "Dostarcz Paczkę", Url = "/DeliverParcel", ControllerName = "DeliverParcel" },
                     new NavBarViewModel { Text = "Historia Zamówień", Url = "/OrderHistory", ControllerName = "OrderHistory" },
-                    new NavBarViewModel { Text = "Aktywne Zamówienia", Url = "/OrderActive", ControllerName = "OrderActive" },
                 }
             },
-            { ClientStatus.Courrier, new List<NavBarViewModel>
+            { ClientStatus.Courier, new List<NavBarViewModel>
                 {
                     new NavBarViewModel { Text = "Start", Url = "/", ControllerName = "Home"},
                     new NavBarViewModel { Text = "Zamówienia", Url = "/Deliveries", ControllerName = "Deliveries" }
@@ -40,7 +39,7 @@ namespace CourierCastingApp.ViewComponents
         public IViewComponentResult Invoke()
         {
             // We must provide there some kind of getting from database of status or just getting from model 
-            ClientStatus userRole = ClientStatus.OfficeWorker;
+            ClientStatus userRole = ClientStatus.Client;
 
             return View(dictionaryNavBar[userRole]);
         }

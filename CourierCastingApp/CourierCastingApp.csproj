@@ -10,16 +10,21 @@
 
   <ItemGroup>
     <Compile Remove="Views\DeliverymanPanel\**" />
+    <Compile Remove="Views\OrderActive\**" />
     <Compile Remove="Views\Shared\NavigationBars\**" />
     <Content Remove="Views\DeliverymanPanel\**" />
+    <Content Remove="Views\OrderActive\**" />
     <Content Remove="Views\Shared\NavigationBars\**" />
     <EmbeddedResource Remove="Views\DeliverymanPanel\**" />
+    <EmbeddedResource Remove="Views\OrderActive\**" />
     <EmbeddedResource Remove="Views\Shared\NavigationBars\**" />
     <None Remove="Views\DeliverymanPanel\**" />
+    <None Remove="Views\OrderActive\**" />
     <None Remove="Views\Shared\NavigationBars\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Client\OrderActiveController.cs" />
     <Compile Remove="Controllers\NavigationBarController.cs" />
   </ItemGroup>
 
