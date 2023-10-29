@@ -10,6 +10,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\DeliverymanPanel\**" />
+    <Compile Remove="Views\OrderActive\**" />
+    <Compile Remove="Views\Shared\NavigationBars\**" />
+    <Compile Remove="Views\Shared\Nowy folder\**" />
+    <Content Remove="Views\DeliverymanPanel\**" />
+    <Content Remove="Views\OrderActive\**" />
+    <Content Remove="Views\Shared\NavigationBars\**" />
+    <Content Remove="Views\Shared\Nowy folder\**" />
+    <EmbeddedResource Remove="Views\DeliverymanPanel\**" />
+    <EmbeddedResource Remove="Views\OrderActive\**" />
+    <EmbeddedResource Remove="Views\Shared\NavigationBars\**" />
+    <EmbeddedResource Remove="Views\Shared\Nowy folder\**" />
+    <None Remove="Views\DeliverymanPanel\**" />
+    <None Remove="Views\OrderActive\**" />
+    <None Remove="Views\Shared\NavigationBars\**" />
+    <None Remove="Views\Shared\Nowy folder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\Client\OrderActiveController.cs" />
+    <Compile Remove="Controllers\NavigationBarController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
   </ItemGroup>
