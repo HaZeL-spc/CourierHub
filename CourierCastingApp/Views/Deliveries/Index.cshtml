@@ -1,5 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Deliveries";
+﻿@model DeliveriesModel
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div><h1>deliveries</h1></div>
+<h1>Deliveries</h1>
+
+@foreach (Delivery delivery in (await Model.GetDeliveries()))
+{
+    <div>
+        <ul>
+            <li>Name:   @delivery.Name</li>
+            <li>Status: @delivery.Status</li>
+        </ul>
+    </div>
+    <br />
+}

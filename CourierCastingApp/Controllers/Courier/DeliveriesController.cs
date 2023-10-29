@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CourierCastingApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.OfficeWorker
 {
@@ -6,7 +7,7 @@ namespace CourierCastingApp.Controllers.OfficeWorker
     {
         public IActionResult Index()
         {
-            return View();
+            return View(new DeliveriesModel());
         }
     }
 }
