@@ -1,17 +1,13 @@
-﻿@model DeliveriesModel
+﻿@model IEnumerable<DeliveryModel>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dostawy";
 }
 
-<h1>Deliveries</h1>
+<h1>Dostawy</h1>
+<h2>Lista twoich dostaw:</h2>
 
-@foreach (Delivery delivery in (await Model.GetDeliveries()))
+@foreach (DeliveryModel delivery in Model)
 {
-    <div>
-        <ul>
-            <li>Name:   @delivery.Name</li>
-            <li>Status: @delivery.Status</li>
-        </ul>
-    </div>
+    @await Component.InvokeAsync("DeliveryCard", delivery)
     <br />
 }

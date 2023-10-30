@@ -6,7 +6,6 @@ namespace CourierAPI.Models
 {
     public class DeliveryModel
     {
-        
         public int Id { get; set; }
         public required DeliveryStatus Status { get; set; }
         public required string Name { get; set; }
@@ -40,36 +39,6 @@ namespace CourierAPI.Models
             EndLocation = new LocationModel(delivery.EndLocation!);
             PickedUpTime = delivery.PickedUpTime;
             FinishedDeliveryTime = delivery.FinishedDeliveryTime;
-        }
-        public void ChangeStatus(DeliveryStatus status)
-        {
-            switch (status)
-            {
-                case DeliveryStatus.Delivered:
-                    SetDelivered();
-                    break;
-                case DeliveryStatus.PickedUp:
-                    SetPickedUp();
-                    break;
-                case DeliveryStatus.Cancelled:
-                    SetCancelled();
-                    break;
-            }
-        }
-        private void SetDelivered()
-        {
-            Status = DeliveryStatus.Delivered;
-            FinishedDeliveryTime = DateTime.Now;
-        }
-        private void SetPickedUp()
-        {
-            Status = DeliveryStatus.PickedUp;
-            PickedUpTime = DateTime.Now;
-        }
-        private void SetCancelled()
-        {
-            Status = DeliveryStatus.Cancelled;
-            FinishedDeliveryTime = DateTime.Now;
         }
     }
 }

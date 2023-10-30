@@ -3,10 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CourierCastingApp.Models;
 
-public class Location
+public class LocationModel
 {
     [SetsRequiredMembers]
-    public Location(string street, string streetNumber, string city, string postCode, string country)
+    public LocationModel(string street, string streetNumber, string city, string postCode, string country)
     {
         Street = street;
         StreetNumber = streetNumber;

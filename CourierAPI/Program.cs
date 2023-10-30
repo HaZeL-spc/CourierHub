@@ -1,17 +1,12 @@
 using CourierAPI.Helpers;
 using CourierAPI.Models;
+using CourierAPI.Services;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.Extensions.Caching.Distributed;
-//using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddStackExchangeRedisCache(options =>
-//{
-//    options.Configuration = "redis:6379"; // redis is the container name of the redis service. 6379 is the default port
-//    options.InstanceName = "SampleInstance";
-//});
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DeliverymanCastingDbContext>(o => 
 o.UseSqlServer(builder.Configuration.GetConnectionString("DeliverymanCastingDbConnectioN")));

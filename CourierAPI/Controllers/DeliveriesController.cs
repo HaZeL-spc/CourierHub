@@ -1,4 +1,5 @@
 ﻿using CourierAPI.Models;
+using CourierAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,22 +9,20 @@ namespace CourierAPI.Controllers
     [ApiController]
     public class DeliveriesController : ControllerBase
     {
-        private readonly DeliverymanCastingDbContext _dbContext;
-        private DeliveriesModel _deliveries;
-        public DeliveriesController(DeliverymanCastingDbContext dbContext)
+        private readonly IDeliveryRepository _deliveryRepository;
+        public DeliveriesController(IDeliveryRepository deliveryRepository)
         {
-            _dbContext = dbContext;
-            _deliveries = new DeliveriesModel(_dbContext);
+            _deliveryRepository = deliveryRepository;
         }
          
         [HttpGet]
         public async Task<IActionResult> Get() 
         {
-            var deliveries = await _deliveries.AsList();
-            if (deliveries is not null)
-                return Ok(deliveries);
+            var result = await _deliveryRepository.GetAllDeliveries();
+            if (result.Success)
+                return Ok(result.Value);
             else
-                return BadRequest();
+                return NotFound();
         }
     }
 }

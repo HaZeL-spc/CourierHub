@@ -1,13 +1,25 @@
 ﻿using CourierCastingApp.Models;
+using CourierCastingApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.OfficeWorker
 {
     public class DeliveriesController : Controller
     {
-        public IActionResult Index()
+        private IDeliveryRepository _deliveryRepository;
+        public DeliveriesController(IDeliveryRepository deliveryRepository)
         {
-            return View(new DeliveriesModel());
+            _deliveryRepository = deliveryRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var result = await _deliveryRepository.GetAllDeliveries();
+            if (result.Success)
+                return View(result.Value);
+            else
+                return NotFound();
         }
     }
 }

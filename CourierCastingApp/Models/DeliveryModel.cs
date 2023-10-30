@@ -3,10 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CourierCastingApp.Models
 {
-    public class Delivery
+    public class DeliveryModel
     {
         [SetsRequiredMembers]
-        public Delivery(int id, string name, Location startLocation, Location endLocation) 
+        public DeliveryModel(int id, string name, LocationModel startLocation, LocationModel endLocation) 
         {
             Id = id;
             Status = DeliveryStatus.NotPickedUp;
@@ -18,14 +18,9 @@ namespace CourierCastingApp.Models
         public required int Id { get; set; }
         public required DeliveryStatus Status { get; set; }
         public required string Name { get; set; }
-        public required Location StartLocation { get; set; }
-        public required Location EndLocation { get; set; }
+        public required LocationModel StartLocation { get; set; }
+        public required LocationModel EndLocation { get; set; }
         public DateTime PickedUpTime;
         public DateTime FinishedDeliveryTime;
-
-        public void ChangeStatus(DeliveryStatus status)
-        {
-            // call to CourierAPI
-        }
     }
 }
