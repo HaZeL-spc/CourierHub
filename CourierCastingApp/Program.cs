@@ -1,10 +1,8 @@
-using CourierCastingApp.Services;
+using CourierCastingApp.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.SetupServices();
 
 var app = builder.Build();
 

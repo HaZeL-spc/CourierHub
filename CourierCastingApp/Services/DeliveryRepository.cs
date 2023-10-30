@@ -1,11 +1,28 @@
-﻿using CourierCastingApp.Helpers;
+﻿using CourierCastingApp.Clients;
+using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Services
 {
+    public interface IDeliveryRepository
+    {
+        public Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries();
+        public Task<Result<DeliveryModel>> GetDelivery(DeliveryModel deliveryId);
+        public Task<Result> AddDelivery(DeliveryModel employee);
+        public Task<Result> UpdateDelivery(DeliveryModel employee);
+        public Task<Result> DeleteDelivery(int deliveryId);
+    }
+
     public class DeliveryRepository : IDeliveryRepository
     {
+        private readonly IDeliveriesClient _deliveriesClient;
+
+        public DeliveryRepository(IDeliveriesClient deliveriesClient)
+        {
+            _deliveriesClient = deliveriesClient;
+        }
+
         public Task<Result> AddDelivery(DeliveryModel employee)
         {
             throw new NotImplementedException();
@@ -18,20 +35,7 @@ namespace CourierCastingApp.Services
 
         public async Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries()
         {
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-
-            using (HttpClient client = new HttpClient(clientHandler))
-            {
-                HttpResponseMessage response = await client.GetAsync("https://courierapi/api/Deliveries");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    IEnumerable<DeliveryModel>? deliveries = await response.Content.ReadFromJsonAsync<  IEnumerable<DeliveryModel>>();
-                    return deliveries == null ? Result.Fail<IEnumerable<DeliveryModel>>("Resource not found") : Result.Ok(deliveries);
-                }
-                return Result.Fail<IEnumerable<DeliveryModel>>("Failed to get response");
-            }
+            return await _deliveriesClient.GetAllDeliveries();
         }
 
         public Task<Result<DeliveryModel>> GetDelivery(DeliveryModel deliveryId)
