@@ -7,7 +7,7 @@ namespace CourierAPI.Services;
 public interface IDeliveryRepository
 {
     public Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries();
-    public Task<Result<DeliveryModel>> GetDelivery(DeliveryModel deliveryId);
+    public Task<Result<DeliveryModel>> GetDelivery(int deliveryId);
     public Task<Result> AddDelivery(DeliveryModel employee);
     public Task<Result> UpdateDelivery(DeliveryModel employee);
     public Task<Result> DeleteDelivery(int deliveryId);
@@ -48,9 +48,25 @@ public class DeliveryRepository : IDeliveryRepository
         }
     }
 
-    public Task<Result<DeliveryModel>> GetDelivery(DeliveryModel deliveryId)
+    public async Task<Result<DeliveryModel>> GetDelivery(int deliveryId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var query = from d in _dbContext.Deliveries
+                        join el in _dbContext.Locations on d.EndLocation!.Id equals el.Id
+                        join sl in _dbContext.Locations on d.StartLocation!.Id equals sl.Id
+                        where d.Id == deliveryId
+                        select new DeliveryModel(d.Id, d.Name, new LocationModel(sl), new LocationModel(el));
+            var delivery = await query.FirstOrDefaultAsync();
+            if (delivery is null)
+                return Result.Fail<DeliveryModel>("Delivery not found");
+            else
+                return Result.Ok(delivery);
+        }
+        catch
+        {
+            return Result.Fail<DeliveryModel>("Failed to recieve data");
+        }
     }
 
     public Task<Result> UpdateDelivery(DeliveryModel employee)

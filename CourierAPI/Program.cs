@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DeliverymanCastingDbContext>(o => 
-o.UseSqlServer(builder.Configuration.GetConnectionString("DeliverymanCastingDbConnectioN")));
+o.UseSqlServer(builder.Configuration.GetConnectionString("DeliverymanCastingDbConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

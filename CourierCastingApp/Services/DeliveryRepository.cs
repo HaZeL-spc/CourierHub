@@ -8,7 +8,7 @@ namespace CourierCastingApp.Services
     public interface IDeliveryRepository
     {
         public Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries();
-        public Task<Result<DeliveryModel>> GetDelivery(DeliveryModel deliveryId);
+        public Task<Result<DeliveryModel>> GetDelivery(int deliveryId);
         public Task<Result> AddDelivery(DeliveryModel employee);
         public Task<Result> UpdateDelivery(DeliveryModel employee);
         public Task<Result> DeleteDelivery(int deliveryId);
@@ -38,9 +38,9 @@ namespace CourierCastingApp.Services
             return await _deliveriesClient.GetAllDeliveries();
         }
 
-        public Task<Result<DeliveryModel>> GetDelivery(DeliveryModel deliveryId)
+        public async Task<Result<DeliveryModel>> GetDelivery(int deliveryId)
         {
-            throw new NotImplementedException();
+            return await _deliveriesClient.GetDelivery(deliveryId);
         }
 
         public Task<Result> UpdateDelivery(DeliveryModel employee)

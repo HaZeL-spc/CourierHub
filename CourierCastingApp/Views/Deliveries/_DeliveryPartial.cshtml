@@ -1,0 +1,14 @@
+﻿@model DeliveryModel
+
+<tr>
+    <td>@Html.DisplayFor(m => m.Name)</td>
+    <td>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsDelivery-@Model.Id">
+            Detale
+        </button>
+        @await Html.PartialAsync("_DetailsDeliveryPartial", Model)
+    </td>
+</tr>
+
+

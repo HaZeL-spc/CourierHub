@@ -1,0 +1,76 @@
+﻿@model DeliveryModel
+
+<!-- Modal -->
+<div class="modal fade" id="detailsDelivery-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="deliveryDetailsLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Detale dostawy</h5>
+				<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.Name)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.Name
+                    </dd>
+				</dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.Status)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(m => m.Status)
+                    </dd>
+				</dl>
+                @if (Model.ShouldDisplayPickedUpTime())
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(m => m.PickedUpTime)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(m => m.PickedUpTime)
+                        </dd>
+                    </dl>
+                }
+                @if (Model.ShouldDisplayFinishedDeliveryTime())
+                {
+                    <dl class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(m => m.FinishedDeliveryTime)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(m => m.FinishedDeliveryTime)
+                        </dd>
+                    </dl>
+                }
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.StartLocation)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @await Html.PartialAsync("_LocationPartial", Model.StartLocation)
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.EndLocation)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @await Html.PartialAsync("_LocationPartial", Model.EndLocation)
+                    </dd>
+                </dl>
+            </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Zamknij</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+

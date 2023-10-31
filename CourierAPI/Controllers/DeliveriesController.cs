@@ -1,6 +1,4 @@
-﻿using CourierAPI.Models;
-using CourierAPI.Services;
-using Microsoft.AspNetCore.Http;
+﻿using CourierAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierAPI.Controllers
@@ -24,5 +22,6 @@ namespace CourierAPI.Controllers
             else
                 return NotFound();
         }
+
     }
 }

@@ -32,13 +32,13 @@ namespace CourierCastingApp.Helpers
           TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(500),
           TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5),
                     }))
-            .AddPolicyHandler(Policy
-                .Handle<TimeoutRejectedException>()
-                .OrTransientHttpError()
-                .CircuitBreakerAsync(
-                    5,                       // how much subsequant failures should open circuit
-                    TimeSpan.FromSeconds(30) // how long circuit should be opened before trying again
-                    ))
+            //.AddPolicyHandler(Policy
+            //    .Handle<TimeoutRejectedException>()
+            //    .OrTransientHttpError()
+            //    .CircuitBreakerAsync(
+            //        5,                       // how much subsequant failures should open circuit
+            //        TimeSpan.FromSeconds(30) // how long circuit should be opened before trying again
+            //        ))
             .AddPolicyHandler(Policy
                 .TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(1))); // timeout for each request
             builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();

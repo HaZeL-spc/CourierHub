@@ -1,17 +1,26 @@
-﻿namespace CourierCastingApp.Helpers
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CourierCastingApp.Helpers
 {
     public enum DeliveryStatus
     {
+        [Display(Name = "Nie odebrano")]
         NotPickedUp = 0,
+        [Display(Name = "Odebrano")]
         PickedUp = 1,
+        [Display(Name = "Dostarczono")]
         Delivered = 2,
+        [Display(Name = "Anulowano")]
         Cancelled = 3
     }
 
     public enum ClientStatus
     {
+        [Display(Name = "Klient")]
         Client = 0,
+        [Display(Name = "Kurier")]
         Courier = 1,
+        [Display(Name = "Pracownik firmy")]
         OfficeWorker = 2
     }
 
