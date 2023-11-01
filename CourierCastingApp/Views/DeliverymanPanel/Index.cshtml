@@ -1,0 +1,16 @@
+﻿@model DeliverymanPanel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Deliveryman Panel!!!</h1>
+
+@foreach (Delivery delivery in Model.GetDeliveries().Result)
+{
+    <div>
+        <ul>
+            <li>Name: @delivery.Name</li>
+        </ul>
+    </div>
+    <br/>
+}

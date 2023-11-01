@@ -1,45 +1,44 @@
 ﻿using CourierAPI.Data;
 using CourierAPI.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CourierAPI.Models
 {
     public class DeliveryModel
     {
-        public required Delivery Delivery { get; set; }
-        public void ChangeStatus(DeliveryStatus status)
-        {
-            switch (status)
-            {
-                case DeliveryStatus.Delivered:
-                    SetDelivered();
-                    break;
-                case DeliveryStatus.PickedUp:
-                    SetPickedUp();
-                    break;
-                case DeliveryStatus.Cancelled:
-                    SetCancelled();
-                    break;
-            }
-        }
-        public void Edit()
-        {
+        public int Id { get; set; }
+        public required DeliveryStatus Status { get; set; }
+        public required string Name { get; set; }
+        public required LocationModel StartLocation { get; set; }
+        public required LocationModel EndLocation { get; set; }
+        public DateTime PickedUpTime;
+        public DateTime FinishedDeliveryTime;
 
-        }
-
-        private void SetDelivered()
+        [SetsRequiredMembers]
+        public DeliveryModel(int id, string name, LocationModel startLocation, LocationModel endLocation)
         {
-            Delivery.Status = DeliveryStatus.Delivered;
-            Delivery.FinishedDeliveryTime = DateTime.Now;
+            Id = id;
+            Name = name;
+            StartLocation = startLocation;
+            EndLocation = endLocation;
         }
-        private void SetPickedUp()
+        [SetsRequiredMembers]
+        public DeliveryModel(string name, LocationModel startLocation, LocationModel endLocation)
         {
-            Delivery.Status = DeliveryStatus.PickedUp;
-            Delivery.PickedUpTime = DateTime.Now;
+            Name = name;
+            StartLocation = startLocation;
+            EndLocation = endLocation;
         }
-        private void SetCancelled()
+        [SetsRequiredMembers]
+        public DeliveryModel(Delivery delivery)
         {
-            Delivery.Status = DeliveryStatus.Cancelled;
-            Delivery.FinishedDeliveryTime = DateTime.Now;
+            Id = delivery.Id;
+            Status = delivery.Status;
+            Name = delivery.Name;
+            StartLocation = new LocationModel(delivery.StartLocation!);
+            EndLocation = new LocationModel(delivery.EndLocation!);
+            PickedUpTime = delivery.PickedUpTime;
+            FinishedDeliveryTime = delivery.FinishedDeliveryTime;
         }
     }
 }

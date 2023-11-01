@@ -1,5 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Deliveries";
+﻿@model IEnumerable<DeliveryModel>
+@{
+    ViewData["Title"] = "Dostawy";
 }
 
-<div><h1>deliveries</h1></div>
+<h1>Dostawy</h1>
+<h2>Lista twoich dostaw:</h2>
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Dostawa</th>
+                <th>Opcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DeliveryModel delivery in Model)
+            {
+                @await Html.PartialAsync("_DeliveryPartial", delivery)
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

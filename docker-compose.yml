@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  couriercastingapp:
+    image: ${DOCKER_REGISTRY-}couriercastingapp
+    build:
+      context: .
+      dockerfile: CourierCastingApp/Dockerfile
+
+  courierapi:
+    image: ${DOCKER_REGISTRY-}courierapi
+    build:
+      context: .
+      dockerfile: CourierAPI/Dockerfile

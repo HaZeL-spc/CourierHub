@@ -1,24 +1,27 @@
-﻿using CourierCastingApp.Services;
+﻿using CourierAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CourierCastingApp.Controllers.OfficeWorker
+namespace CourierAPI.Controllers
 {
-    public class DeliveriesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DeliveriesController : ControllerBase
     {
-        private IDeliveryRepository _deliveryRepository;
+        private readonly IDeliveryRepository _deliveryRepository;
         public DeliveriesController(IDeliveryRepository deliveryRepository)
         {
             _deliveryRepository = deliveryRepository;
         }
-
+         
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Get() 
         {
             var result = await _deliveryRepository.GetAllDeliveries();
             if (result.Success)
-                return View(result.Value);
+                return Ok(result.Value);
             else
                 return NotFound();
         }
+
     }
 }
