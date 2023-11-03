@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.Client
 {
-    public class OrderHistoryController : BaseController
+    public class OrderHistoryController : Controller
     {
 
-        public OrderHistoryController(ICourierCastingAppRepository courierRepository) : base(courierRepository)
+        public OrderHistoryController()
         { }
         public IActionResult Index()
         {

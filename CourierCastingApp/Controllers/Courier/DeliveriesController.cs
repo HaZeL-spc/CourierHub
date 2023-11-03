@@ -1,12 +1,13 @@
 ﻿using CourierCastingApp.Services;
+using CourierCastingApp.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.OfficeWorker
 {
-    public class DeliveriesController : BaseController
+    public class DeliveriesController : Controller
     {
         private IDeliveryRepository _deliveryRepository;
-        public DeliveriesController(IDeliveryRepository deliveryRepository, ICourierCastingAppRepository courierRepository) : base(courierRepository)
+        public DeliveriesController(IDeliveryRepository deliveryRepository)
         {
             _deliveryRepository = deliveryRepository;
         }

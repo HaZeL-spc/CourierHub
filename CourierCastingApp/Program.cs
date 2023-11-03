@@ -1,13 +1,20 @@
+using CourierCastingApp.Filters;
 using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
 using CourierCastingApp.Services;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICourierCastingAppRepository, CourierCastingAppRepository>();
 builder.Services.AddDbContext<CourierCastingAppDbContext>(o =>
 o.UseSqlServer(builder.Configuration.GetConnectionString("CourierCastingAppConnection")));
 builder.Services.AddSession();
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(typeof(UpdateCacheFilter), order: 1);
+});
 // Add services to the container.
 builder.SetupServices();
 

@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.Client
 {
-    public class DeliverParcelController : BaseController
+    public class DeliverParcelController : Controller
     {
-        public DeliverParcelController(ICourierCastingAppRepository courierRepository) : base(courierRepository)
-        { }
-
         public IActionResult Index()
         {
             return View();

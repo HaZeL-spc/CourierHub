@@ -1,39 +1,37 @@
 ﻿using CourierCastingApp.Data;
 using CourierCastingApp.Services;
-using Microsoft.AspNetCore.DataProtection.Repositories;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using NuGet.DependencyResolver;
+using System;
+using System.Diagnostics;
 
-namespace CourierCastingApp.Controllers
+namespace CourierCastingApp.Filters
 {
-    public class BaseController : Controller
+    public class UpdateCacheFilter : ActionFilterAttribute
     {
         protected ICourierCastingAppRepository _courierRepository;
 
-        public BaseController(ICourierCastingAppRepository courierRepository)
+        public UpdateCacheFilter(ICourierCastingAppRepository courierRepository)
         {
             _courierRepository = courierRepository;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var IfNewSession = IsNewSession();
+            var IfNewSession = IsNewSession(filterContext);
             if (IfNewSession)
             {
                 var session = new SessionHistory(DateTime.Now);
                 _courierRepository.AddSession(session);
             }
-
-
-            base.OnActionExecuting(filterContext);
         }
 
-        private bool IsNewSession()
+        private bool IsNewSession(ActionExecutingContext filterContext)
         {
             String SessionKeyName = "isNewSession";
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(SessionKeyName)))
+            if (string.IsNullOrEmpty(filterContext.HttpContext.Session.GetString(SessionKeyName)))
             {
-                HttpContext.Session.SetString(SessionKeyName, "false");
+                filterContext.HttpContext.Session.SetString(SessionKeyName, "false");
                 return true;
             }
 
