@@ -8,15 +8,13 @@ using System.Threading.Tasks;
 
 namespace CourierCastingApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICourierCastingAppRepository _courierRepository;
 
-        public HomeController(ILogger<HomeController> logger, ICourierCastingAppRepository courierRepository)
+        public HomeController(ILogger<HomeController> logger, ICourierCastingAppRepository courierRepository):base(courierRepository)
         {
             _logger = logger;
-            _courierRepository = courierRepository;
         } 
 
         public async Task<ActionResult> Index()

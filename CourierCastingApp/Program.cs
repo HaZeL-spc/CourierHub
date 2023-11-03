@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICourierCastingAppRepository, CourierCastingAppRepository>();
-builder.Services.AddControllers();
 builder.Services.AddDbContext<CourierCastingAppDbContext>(o =>
 o.UseSqlServer(builder.Configuration.GetConnectionString("CourierCastingAppConnection")));
+builder.Services.AddSession();
 // Add services to the container.
 builder.SetupServices();
 
@@ -33,5 +33,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Seed();
+app.UseSession();
 
 app.Run();
