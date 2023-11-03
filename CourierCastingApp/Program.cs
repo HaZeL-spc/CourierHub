@@ -1,6 +1,13 @@
 using CourierCastingApp.Helpers;
+using CourierCastingApp.Models;
+using CourierCastingApp.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<ICourierCastingAppRepository, CourierCastingAppRepository>();
+builder.Services.AddControllers();
+builder.Services.AddDbContext<CourierCastingAppDbContext>(o =>
+o.UseSqlServer(builder.Configuration.GetConnectionString("CourierCastingAppConnection")));
 // Add services to the container.
 builder.SetupServices();
 
@@ -24,5 +31,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Seed();
 
 app.Run();
