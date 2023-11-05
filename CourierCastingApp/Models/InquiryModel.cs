@@ -23,7 +23,7 @@ namespace CourierCastingApp.Models
             if (id != -1)
                 Id = id;
         }
-        
+
         public required double DimX { get; set; }
         public required double DimY { get; set; }
         public required double DimZ { get; set; }
