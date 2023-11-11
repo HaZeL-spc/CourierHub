@@ -5,8 +5,8 @@ namespace CourierCastingApp.Clients
 {
     public interface IDeliveriesClient
     {
-        public Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries();
-        public Task<Result<DeliveryModel>> GetDelivery(int deliveryId);
+        public Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries();
+        public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
     }
 
     public class DeliveriesClient : IDeliveriesClient
@@ -18,26 +18,26 @@ namespace CourierCastingApp.Clients
             _client = client;
             _configuration = configuration;
         }
-        public async Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries()
+        public async Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries()
         {
             var response = await _client.GetAsync(_configuration.GetSection("DefaultURIs")["DeliveriesURI"]!);
             if (response.IsSuccessStatusCode)
             {
-                IEnumerable<DeliveryModel>? deliveries = await response.Content.ReadFromJsonAsync<IEnumerable<DeliveryModel>>();
-                return deliveries == null ? Result.Fail<IEnumerable<DeliveryModel>>("Resource not found") : Result.Ok(deliveries);
+                IEnumerable<DeliveryDto>? deliveries = await response.Content.ReadFromJsonAsync<IEnumerable<DeliveryDto>>();
+                return deliveries == null ? Result.Fail<IEnumerable<DeliveryDto>>("Resource not found") : Result.Ok(deliveries);
             }
-            return Result.Fail<IEnumerable<DeliveryModel>>("Failed to get response");
+            return Result.Fail<IEnumerable<DeliveryDto>>("Failed to get response");
         }
 
-        public async Task<Result<DeliveryModel>> GetDelivery(int deliveryId)
+        public async Task<Result<DeliveryDto>> GetDelivery(int deliveryId)
         {
             var response = await _client.GetAsync($"{_configuration.GetSection("DefaultURIs")["DeliveriesURI"]!}/GetDelivery/{deliveryId}");
             if (response.IsSuccessStatusCode)
             {
-                DeliveryModel? deliveries = await response.Content.ReadFromJsonAsync<DeliveryModel>();
-                return deliveries == null ? Result.Fail<DeliveryModel>("Resource not found") : Result.Ok(deliveries);
+                DeliveryDto? deliveries = await response.Content.ReadFromJsonAsync<DeliveryDto>();
+                return deliveries == null ? Result.Fail<DeliveryDto>("Resource not found") : Result.Ok(deliveries);
             }
-            return Result.Fail<DeliveryModel>("Failed to get response");
+            return Result.Fail<DeliveryDto>("Failed to get response");
         }
     }
 }

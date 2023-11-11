@@ -4,6 +4,7 @@ using CourierAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourierAPI.Migrations
 {
     [DbContext(typeof(DeliverymanCastingDbContext))]
-    partial class DeliverymanCastingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231111151654_AddClientEntity")]
+    partial class AddClientEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace CourierAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientId")
+                    b.Property<int?>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EndLocationId")
@@ -111,11 +114,9 @@ namespace CourierAPI.Migrations
 
             modelBuilder.Entity("CourierAPI.Data.Delivery", b =>
                 {
-                    b.HasOne("CourierAPI.Data.Client", "Client")
+                    b.HasOne("CourierAPI.Data.Client", null)
                         .WithMany("Deliveries")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("CourierAPI.Data.Location", "EndLocation")
                         .WithMany()
@@ -124,8 +125,6 @@ namespace CourierAPI.Migrations
                     b.HasOne("CourierAPI.Data.Location", "StartLocation")
                         .WithMany()
                         .HasForeignKey("StartLocationId");
-
-                    b.Navigation("Client");
 
                     b.Navigation("EndLocation");
 

@@ -5,12 +5,20 @@ namespace CourierCastingApp.Controllers.Client
 {
     public class OrderHistoryController : Controller
     {
-
-        public OrderHistoryController()
-        { }
-        public IActionResult Index()
+        private IDeliveryRepository _deliveryRepository;
+        public OrderHistoryController(IDeliveryRepository deliveryRepository)
         {
-            return View();
+            _deliveryRepository = deliveryRepository;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var result = await _deliveryRepository.GetAllDeliveries();
+            if (result.Success)
+                return View(result.Value);
+            else
+                return NotFound();
         }
     }
 }

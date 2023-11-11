@@ -14,9 +14,9 @@ namespace CourierAPI.Controllers
         }
          
         [HttpGet]
-        public async Task<IActionResult> Get() 
+        public async Task<IActionResult> Get(CancellationToken cancellationToken) 
         {
-            var result = await _deliveryRepository.GetAllDeliveries();
+            var result = await _deliveryRepository.GetAllDeliveries(cancellationToken);
             if (result.Success)
                 return Ok(result.Value);
             else

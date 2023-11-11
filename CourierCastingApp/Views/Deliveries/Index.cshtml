@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DeliveryModel>
+﻿@model IEnumerable<DeliveryDto>
 @{
     ViewData["Title"] = "Dostawy";
 }
@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (DeliveryModel delivery in Model)
+            @foreach (DeliveryDto delivery in Model)
             {
                 @await Html.PartialAsync("_DeliveryPartial", delivery)
             }

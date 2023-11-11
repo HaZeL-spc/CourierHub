@@ -1,4 +1,5 @@
-﻿using CourierAPI.Helpers;
+﻿using CourierAPI.Data;
+using CourierAPI.Helpers;
 using CourierAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,10 +7,10 @@ namespace CourierAPI.Services;
 
 public interface IDeliveryRepository
 {
-    public Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries();
-    public Task<Result<DeliveryModel>> GetDelivery(int deliveryId);
-    public Task<Result> AddDelivery(DeliveryModel employee);
-    public Task<Result> UpdateDelivery(DeliveryModel employee);
+    public Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries(CancellationToken cancellationToken);
+    public Task<Result<DeliveryDto>> GetDelivery(int deliveryId, CancellationToken cancellationToken);
+    public Task<Result> AddDelivery(DeliveryDto employee);
+    public Task<Result> UpdateDelivery(DeliveryDto employee);
     public Task<Result> DeleteDelivery(int deliveryId);
 }
 public class DeliveryRepository : IDeliveryRepository
@@ -21,7 +22,7 @@ public class DeliveryRepository : IDeliveryRepository
         _dbContext = dbContext;
     }
 
-    public Task<Result> AddDelivery(DeliveryModel employee)
+    public Task<Result> AddDelivery(DeliveryDto employee)
     {
         throw new NotImplementedException();
     }
@@ -31,45 +32,47 @@ public class DeliveryRepository : IDeliveryRepository
         throw new NotImplementedException();
     }
 
-    public async Task<Result<IEnumerable<DeliveryModel>>> GetAllDeliveries()
+    public async Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries(CancellationToken cancellationToken)
     {
         try
         {
-            var query = from d in _dbContext.Deliveries
-                        join el in _dbContext.Locations on d.EndLocation!.Id equals el.Id
-                        join sl in _dbContext.Locations on d.StartLocation!.Id equals sl.Id
-                        select new DeliveryModel(d.Id, d.Name, new LocationModel(sl), new LocationModel(el));
-            var deliveries = await query.ToListAsync();
-            return Result.Ok<IEnumerable<DeliveryModel>>(deliveries);
+            var deliveries = await _dbContext.Deliveries
+                .Include(x => x.EndLocation)
+                .Include(x => x.StartLocation)
+                .Include(x => x.Client)
+                .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationModel(x.StartLocation), new LocationModel(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
+                .ToArrayAsync(cancellationToken);
+            return Result.Ok<IEnumerable<DeliveryDto>>(deliveries);
         }
         catch
         {
-            return Result.Fail<IEnumerable<DeliveryModel>>("Failed to recieve data");
+            return Result.Fail<IEnumerable<DeliveryDto>>("Failed to recieve data");
         }
     }
 
-    public async Task<Result<DeliveryModel>> GetDelivery(int deliveryId)
+    public async Task<Result<DeliveryDto>> GetDelivery(int deliveryId, CancellationToken cancellationToken)
     {
         try
         {
-            var query = from d in _dbContext.Deliveries
-                        join el in _dbContext.Locations on d.EndLocation!.Id equals el.Id
-                        join sl in _dbContext.Locations on d.StartLocation!.Id equals sl.Id
-                        where d.Id == deliveryId
-                        select new DeliveryModel(d.Id, d.Name, new LocationModel(sl), new LocationModel(el));
-            var delivery = await query.FirstOrDefaultAsync();
+            var delivery = await _dbContext.Deliveries
+                .Include(x => x.EndLocation)
+                .Include(x => x.StartLocation)
+                .Include(x => x.Client)
+                .Where(x => x.Id == deliveryId)
+                .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationModel(x.StartLocation), new LocationModel(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
+                .FirstOrDefaultAsync(cancellationToken);
             if (delivery is null)
-                return Result.Fail<DeliveryModel>("Delivery not found");
+                return Result.Fail<DeliveryDto>("Delivery not found");
             else
                 return Result.Ok(delivery);
         }
         catch
         {
-            return Result.Fail<DeliveryModel>("Failed to recieve data");
+            return Result.Fail<DeliveryDto>("Failed to recieve data");
         }
     }
 
-    public Task<Result> UpdateDelivery(DeliveryModel employee)
+    public Task<Result> UpdateDelivery(DeliveryDto employee)
     {
         throw new NotImplementedException();
     }
