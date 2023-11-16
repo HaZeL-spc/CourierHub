@@ -6,8 +6,8 @@ public record DeliveryDto(
     int Id, 
     DeliveryStatus Status, 
     string Name, 
-    LocationModel StartLocation,
-    LocationModel EndLocation, 
+    LocationDTO StartLocation,
+    LocationDTO EndLocation, 
     DateTime PickedUptime, 
     DateTime FinishedDeliveryTime, 
     int ClientId);

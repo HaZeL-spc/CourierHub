@@ -40,7 +40,7 @@ public class DeliveryRepository : IDeliveryRepository
                 .Include(x => x.EndLocation)
                 .Include(x => x.StartLocation)
                 .Include(x => x.Client)
-                .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationModel(x.StartLocation), new LocationModel(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
+                .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationDTO(x.StartLocation), new LocationDTO(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
                 .ToArrayAsync(cancellationToken);
             return Result.Ok<IEnumerable<DeliveryDto>>(deliveries);
         }
@@ -59,7 +59,7 @@ public class DeliveryRepository : IDeliveryRepository
                 .Include(x => x.StartLocation)
                 .Include(x => x.Client)
                 .Where(x => x.Id == deliveryId)
-                .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationModel(x.StartLocation), new LocationModel(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
+                .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationDTO(x.StartLocation), new LocationDTO(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
                 .FirstOrDefaultAsync(cancellationToken);
             if (delivery is null)
                 return Result.Fail<DeliveryDto>("Delivery not found");

@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CourierAPI.Models
 {
-    public class LocationModel
+    public class LocationDTO
     {
         [SetsRequiredMembers]
-        public LocationModel(int id, string street, string streetNumber, string city, string postCode, string country)
+        public LocationDTO(int id, string street, string streetNumber, string city, string postCode, string country)
         {
             Id = id;
             Street = street;
@@ -17,7 +17,7 @@ namespace CourierAPI.Models
             Country = country;
         }
         [SetsRequiredMembers]
-        public LocationModel(string street, string streetNumber, string city, string postCode, string country)
+        public LocationDTO(string street, string streetNumber, string city, string postCode, string country)
         {
             Street = street;
             StreetNumber = streetNumber;
@@ -26,7 +26,7 @@ namespace CourierAPI.Models
             Country = country;
         }
         [SetsRequiredMembers]
-        public LocationModel(Location location)
+        public LocationDTO(Location location)
         {
             Id = location.Id;
             Street = location.Street;
