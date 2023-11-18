@@ -2,13 +2,13 @@
 
 namespace CourierAPI.Models
 {
-    public class InquiryModel
+    public class InquiryDTO
     {
         [SetsRequiredMembers]
-        public InquiryModel(
+        public InquiryDTO(
             double dimX, double dimY, double dimZ, double weight,
             DateOnly deliveryDate,
-            LocationModel startLocation, LocationModel endLocation,
+            LocationDTO startLocation, LocationDTO endLocation,
             bool hightPriority, bool weekendDelivery,
             int id = -1
             )
@@ -29,8 +29,8 @@ namespace CourierAPI.Models
         public required double DimZ { get; set; }
         public required double Weight { get; set; }
         public required DateOnly DeliveryDate { get; set; }
-        public required LocationModel StartLocation { get; set; }
-        public required LocationModel EndLocation { get; set; }
+        public required LocationDTO StartLocation { get; set; }
+        public required LocationDTO EndLocation { get; set; }
         public required bool HightPriority { get; set; }
         public required bool WeekendDelivery { get; set; }
         public int Id { get; set; }

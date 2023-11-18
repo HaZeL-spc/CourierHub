@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CourierCastingApp.Models
 {
-    public class DeliveryModel
+    public record DeliveryDto
     {
         [Display(Name = "Identyfikator")]
         public required int Id { get; set; }
@@ -27,8 +27,10 @@ namespace CourierCastingApp.Models
         [Display(Name = "Zakończenie dostawy")]
         public DateTime FinishedDeliveryTime { get; set; }
 
+        public int ClientId { get; init; }
+
         [SetsRequiredMembers]
-        public DeliveryModel(int id, string name, LocationModel startLocation, LocationModel endLocation)
+        public DeliveryDto(int id, string name, LocationModel startLocation, LocationModel endLocation)
         {
             Id = id;
             Status = DeliveryStatus.NotPickedUp;

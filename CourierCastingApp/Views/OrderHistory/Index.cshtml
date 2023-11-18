@@ -1,5 +1,37 @@
-﻿@{
+﻿<div><h1>Order History</h1></div>
+@model IEnumerable<DeliveryDto>
+@{
     ViewData["Title"] = "Order History";
 }
 
-<div><h1>Order History</h1></div>
+<div class="row">
+    <tbody>
+        <div>
+            <h1>Dostarczone:</h1>
+            <table cellspacing="0">
+                @foreach (var delivery in Model)
+                {
+                    if (delivery.Status == CourierCastingApp.Helpers.DeliveryStatus.Delivered)
+                    {
+                        @await Html.PartialAsync("_DeliveryPartial", delivery)
+                    }
+                }
+            </table>
+        </div>
+        <div>
+            <h1>W trakcie:</h1>
+            <table cellspacing="0">
+                @foreach (var delivery in Model)
+                {
+                    if (delivery.Status != CourierCastingApp.Helpers.DeliveryStatus.Delivered)
+                    {
+                        @await Html.PartialAsync("_DeliveryPartial", delivery)
+                    }
+                }
+            </table>
+        </div>
+    </tbody>
+</div>
+
+
+
