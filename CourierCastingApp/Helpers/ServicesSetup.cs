@@ -10,6 +10,7 @@ namespace CourierCastingApp.Helpers
     {
         public static void SetupServices(this WebApplicationBuilder builder)
         {
+            builder.Services.AddScoped<IDeliveryConverter, DeliveryConverter>();
             var handler = new HttpClientHandler();
             handler.ServerCertificateCustomValidationCallback =
                 (httpRequestMessage, cert, cetChain, policyErrors) =>

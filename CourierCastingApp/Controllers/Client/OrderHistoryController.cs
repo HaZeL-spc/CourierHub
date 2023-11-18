@@ -6,8 +6,10 @@ namespace CourierCastingApp.Controllers.Client
     public class OrderHistoryController : Controller
     {
         private IDeliveryRepository _deliveryRepository;
-        public OrderHistoryController(IDeliveryRepository deliveryRepository)
+        private IDeliveryConverter _converter;
+        public OrderHistoryController(IDeliveryRepository deliveryRepository, IDeliveryConverter converter)
         {
+            _converter = converter;
             _deliveryRepository = deliveryRepository;
         }
 
@@ -16,7 +18,10 @@ namespace CourierCastingApp.Controllers.Client
         {
             var result = await _deliveryRepository.GetAllDeliveries();
             if (result.Success)
-                return View(result.Value);
+            {
+                var deliveries = _converter.DtoToVmList(result.Value);
+                return View(deliveries);
+            }
             else
                 return NotFound();
         }
