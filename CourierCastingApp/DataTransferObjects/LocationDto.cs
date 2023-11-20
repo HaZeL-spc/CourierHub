@@ -29,4 +29,9 @@ public class LocationDto
         PostCode = postCode;
         Country = country;
     }
+
+    public LocationDto()
+    {
+
+    }
 }

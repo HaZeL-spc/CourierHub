@@ -1,16 +1,15 @@
 ﻿using CourierCastingApp.Services;
 using CourierCastingApp.Filters;
 using Microsoft.AspNetCore.Mvc;
+using CourierCastingApp.ViewModels;
 
 namespace CourierCastingApp.Controllers.OfficeWorker
 {
     public class DeliveriesController : Controller
     {
         private IDeliveryRepository _deliveryRepository;
-        private IDeliveryConverter _deliveryConverter;
-        public DeliveriesController(IDeliveryRepository deliveryRepository, IDeliveryConverter converter)
+        public DeliveriesController(IDeliveryRepository deliveryRepository)
         {
-            _deliveryConverter = converter;
             _deliveryRepository = deliveryRepository;
         }
 
@@ -20,7 +19,7 @@ namespace CourierCastingApp.Controllers.OfficeWorker
             var result = await _deliveryRepository.GetAllDeliveries();
             if (result.Success)
             {
-                var deliveries = _deliveryConverter.DtoToVmList(result.Value);
+                var deliveries = result.Value.Select(d => new DeliveryVm(d)).ToList();
 
                 return View(deliveries);
             }

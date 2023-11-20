@@ -1,0 +1,19 @@
+﻿@model IEnumerable<DeliveryVm>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Realizowane oferty</th>
+                <th>Opcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DeliveryVm delivery in Model)
+            {
+                @if (delivery.IsCompleted())
+                    @await Html.PartialAsync("_DeliveryPartial", delivery)
+            }
+        </tbody>
+    </table>
+</div>

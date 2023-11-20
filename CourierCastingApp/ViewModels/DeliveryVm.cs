@@ -19,6 +19,11 @@ namespace CourierCastingApp.ViewModels
             ClientId = delivery.ClientId;
         }
 
+        public DeliveryVm()
+        {
+
+        }
+
         [Display(Name = "Identyfikator")]
         public int Id { get; set; }
 
@@ -54,6 +59,16 @@ namespace CourierCastingApp.ViewModels
         public bool ShouldDisplayFinishedDeliveryTime()
         {
             return Status == DeliveryStatus.Delivered || Status == DeliveryStatus.Cancelled;
+        }
+
+        public bool IsInProgress()
+        {
+            return Status == DeliveryStatus.NotPickedUp || Status == DeliveryStatus.PickedUp;
+        }
+
+        public bool IsCompleted()
+        {
+            return Status == DeliveryStatus.Cancelled || Status == DeliveryStatus.Delivered;
         }
     }
 }

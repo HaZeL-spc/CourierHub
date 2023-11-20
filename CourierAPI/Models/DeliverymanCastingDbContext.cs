@@ -11,6 +11,7 @@ public partial class DeliverymanCastingDbContext : DbContext
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Client> Clients { get; set; }
+    public DbSet<Inquiry> Inquiries { get; set; }
 
     public DeliverymanCastingDbContext()
     {
@@ -23,7 +24,10 @@ public partial class DeliverymanCastingDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ClientConfiguration());
+        modelBuilder
+            .ApplyConfiguration(new DeliveryConfiguration())
+            .ApplyConfiguration(new InquiryConfiguration())
+            .ApplyConfiguration(new ClientConfiguration());
         OnModelCreatingPartial(modelBuilder);
     }
 

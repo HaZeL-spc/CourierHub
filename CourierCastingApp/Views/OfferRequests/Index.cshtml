@@ -1,5 +1,22 @@
-﻿@{
-    ViewData["Title"] = "Offer Requests";
+﻿@model (ICollection<InquiryVm> Inquiries, ICollection<DeliveryVm> Deliveries)
+
+@{
+    ViewData["Title"] = "Oferty";
 }
 
-<div><h1>Offer Requests</h1></div>
+<div><h1>Oferty</h1></div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @await Html.PartialAsync("_NewOffersPartial", Model.Inquiries)
+        </div>
+        <div class="col">
+            @await Html.PartialAsync("_InProgressOffersPartial", Model.Deliveries)
+        </div>
+        <div class="col">
+            @await Html.PartialAsync("_CompletedOffersPartial", Model.Deliveries)
+        </div>
+    </div>
+</div>

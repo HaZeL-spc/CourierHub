@@ -1,4 +1,5 @@
 ﻿using CourierCastingApp.Services;
+using CourierCastingApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.Client
@@ -6,10 +7,8 @@ namespace CourierCastingApp.Controllers.Client
     public class OrderHistoryController : Controller
     {
         private IDeliveryRepository _deliveryRepository;
-        private IDeliveryConverter _converter;
-        public OrderHistoryController(IDeliveryRepository deliveryRepository, IDeliveryConverter converter)
+        public OrderHistoryController(IDeliveryRepository deliveryRepository)
         {
-            _converter = converter;
             _deliveryRepository = deliveryRepository;
         }
 
@@ -19,7 +18,7 @@ namespace CourierCastingApp.Controllers.Client
             var result = await _deliveryRepository.GetAllDeliveries();
             if (result.Success)
             {
-                var deliveries = _converter.DtoToVmList(result.Value);
+                var deliveries = result.Value.Select(d => new DeliveryVm(d)).ToList();
                 return View(deliveries);
             }
             else
