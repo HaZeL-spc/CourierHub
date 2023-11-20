@@ -2,6 +2,16 @@
 
 namespace CourierAPI.Data;
 
+//public record Location
+//{
+//    public int Id { get; set; }
+//    public string Street { get; set; }
+//    public string StreetNumber { get; set; }
+//    public string City { get; set; }
+//    public string PostCode { get; set; }
+//    public string Country { get; set; }
+//}
+
 public class Location
 {
     public Location()
@@ -33,7 +43,7 @@ public class Location
     [Key]
     public int Id { get; set; }
     [Required]
-    public  string Street { get; set; }
+    public string Street { get; set; }
     [Required]
     public string StreetNumber { get; set; }
     [Required]

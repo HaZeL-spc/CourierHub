@@ -1,5 +1,6 @@
 ﻿using CourierAPI.Data;
 using CourierAPI.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CourierAPI.Helpers
 {
@@ -11,6 +12,7 @@ namespace CourierAPI.Helpers
             using var context = scope.ServiceProvider.GetRequiredService<DeliverymanCastingDbContext>();
             context.Database.EnsureCreated();
             AddDeliveries(context);
+            AddInquiries(context);
         }
         private static void AddDeliveries(DeliverymanCastingDbContext context)
         {
@@ -41,6 +43,41 @@ namespace CourierAPI.Helpers
                     }
                 }
             });
+
+            context.SaveChanges();
+        }
+        
+        private static void AddInquiries(DeliverymanCastingDbContext context)
+        {
+            if (context.Inquiries.FirstOrDefault() != null) return;
+
+            context.Inquiries.Add(new Inquiry
+            {
+                DimX = 9,
+                DimY = 9,
+                DimZ = 9,
+                Weight = 33,
+                HightPriority = true,
+                WeekendDelivery = true,
+                Name = "Komiks Maciek koks",
+                StartLocation = new Location("Karolik", "311", "Warszawa", "01-443", "Polska"),
+                EndLocation = new Location("Lici", "1332", "Mrozy", "13-441", "Polska"),
+            });
+            
+            context.Inquiries.Add(new Inquiry
+            {
+                DimX = 19,
+                DimY = 19,
+                DimZ = 19,
+                Weight = 3,
+                HightPriority = false,
+                WeekendDelivery = false,
+                Name = "Kask",
+                StartLocation = new Location("Ruska", "78", "Suwalken", "16-400", "Polska"),
+                EndLocation = new Location("Czeska", "4", "Vilnus", "113-441", "Litwa"),
+            });
+
+            
 
             context.SaveChanges();
         }

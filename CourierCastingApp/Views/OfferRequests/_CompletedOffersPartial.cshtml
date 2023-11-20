@@ -1,27 +1,19 @@
 ﻿@model IEnumerable<DeliveryVm>
-@{
-    ViewData["Title"] = "Dostawy";
-}
 
-<h1>Dostawy</h1>
-<h2>Lista twoich dostaw:</h2>
-
-<div class="row">
+<div class="container">
     <table class="table">
         <thead>
             <tr>
-                <th>Dostawa</th>
+                <th>Realizowane oferty</th>
                 <th>Opcje</th>
             </tr>
         </thead>
         <tbody>
             @foreach (DeliveryVm delivery in Model)
             {
-                @await Html.PartialAsync("_DeliveryPartial", delivery)
+                @if (delivery.IsCompleted())
+                    @await Html.PartialAsync("_DeliveryPartial", delivery)
             }
         </tbody>
     </table>
 </div>
-
-
-

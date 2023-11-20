@@ -1,4 +1,5 @@
 ﻿using CourierCastingApp.Services;
+using CourierCastingApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Controllers.Client
@@ -16,7 +17,10 @@ namespace CourierCastingApp.Controllers.Client
         {
             var result = await _deliveryRepository.GetAllDeliveries();
             if (result.Success)
-                return View(result.Value);
+            {
+                var deliveries = result.Value.Select(d => new DeliveryVm(d)).ToList();
+                return View(deliveries);
+            }
             else
                 return NotFound();
         }
