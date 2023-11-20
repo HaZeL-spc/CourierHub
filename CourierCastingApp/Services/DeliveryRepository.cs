@@ -1,6 +1,6 @@
 ﻿using CourierCastingApp.Clients;
+using CourierCastingApp.DataTransferObjects;
 using CourierCastingApp.Helpers;
-using CourierCastingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierCastingApp.Services

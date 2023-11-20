@@ -1,0 +1,18 @@
+﻿@model IEnumerable<InquiryVm>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nowa Oferta</th>
+                <th>Opcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (InquiryVm inquiry in Model)
+            {
+                @await Html.PartialAsync("_InquiryPartial", inquiry)
+            }
+        </tbody>
+    </table>
+</div>

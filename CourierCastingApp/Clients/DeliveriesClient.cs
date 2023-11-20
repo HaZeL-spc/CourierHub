@@ -1,4 +1,5 @@
-﻿using CourierCastingApp.Helpers;
+﻿using CourierCastingApp.DataTransferObjects;
+using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
 
 namespace CourierCastingApp.Clients

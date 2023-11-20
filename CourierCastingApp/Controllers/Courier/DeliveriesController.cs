@@ -1,6 +1,7 @@
 ﻿using CourierCastingApp.Services;
 using CourierCastingApp.Filters;
 using Microsoft.AspNetCore.Mvc;
+using CourierCastingApp.ViewModels;
 
 namespace CourierCastingApp.Controllers.OfficeWorker
 {
@@ -17,7 +18,12 @@ namespace CourierCastingApp.Controllers.OfficeWorker
         {
             var result = await _deliveryRepository.GetAllDeliveries();
             if (result.Success)
-                return View(result.Value);
+            {
+                var deliveries = result.Value.Select(d => new DeliveryVm(d)).ToList();
+
+                return View(deliveries);
+            }
+            
             else
                 return NotFound();
         }

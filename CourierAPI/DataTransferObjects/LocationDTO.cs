@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CourierAPI.Models
 {
+
     public class LocationDTO
     {
         [SetsRequiredMembers]
