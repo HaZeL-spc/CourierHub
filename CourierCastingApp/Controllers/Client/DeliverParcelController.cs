@@ -25,7 +25,11 @@ namespace CourierCastingApp.Controllers.Client
             if (ModelState.IsValid)
             {
                 var result = await _deliveryRepository.GetAllDeliveries();
-                Console.Write("fit");
+
+				if (result.Success)
+                {
+                    Console.WriteLine("chuj");
+                }
 			}
 
             return View(model); // Return to the same view with validation error messages.
