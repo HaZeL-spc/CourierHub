@@ -1,4 +1,5 @@
-﻿using CourierAPI.Services;
+﻿using CourierAPI.Models;
+using CourierAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,5 +24,14 @@ namespace CourierAPI.Controllers
             else
                 return NotFound();
         }
-    }
+
+		[HttpPost]
+		public IActionResult AddInquiry([FromBody] InquiryDTO data)
+		{
+			// Handle the incoming data
+			// Perform necessary operations
+			// Return a response
+			return Ok("Data received successfully");
+		}
+	}
 }

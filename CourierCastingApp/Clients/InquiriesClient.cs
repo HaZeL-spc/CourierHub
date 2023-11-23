@@ -1,14 +1,17 @@
 ﻿using CourierCastingApp.DataTransferObjects;
 using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace CourierCastingApp.Clients
 {
     public interface IInquiriesClient
     {
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
-        //public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
-    }
+		public Task<Result<InquiryDto>> CreateInquiry(InquiryDto newInquiry);
+		//public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
+	}
 
     public class InquiriesClient : IInquiriesClient
     {
@@ -31,5 +34,30 @@ namespace CourierCastingApp.Clients
             }
             return Result.Fail<IEnumerable<InquiryDto>>("Failed to get response");
         }
-    }
+
+		public async Task<Result<InquiryDto>> CreateInquiry(InquiryDto newInquiry)
+		{
+			try
+			{
+				// Convert the object to JSON
+				var jsonInquiry = JsonConvert.SerializeObject(newInquiry);
+				var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+				// POST request
+				var response = await _client.PostAsync(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!, content);
+
+				if (response.IsSuccessStatusCode)
+				{
+					InquiryDto createdInquiry = await response.Content.ReadFromJsonAsync<InquiryDto>();
+					return createdInquiry == null ? Result.Fail<InquiryDto>("Failed to create inquiry") : Result.Ok(createdInquiry);
+				}
+
+				return Result.Fail<InquiryDto>($"Failed to create inquiry. Status code: {response.StatusCode}");
+			}
+			catch (Exception ex)
+			{
+				return Result.Fail<InquiryDto>($"Error: {ex.Message}");
+			}
+		}
+	}
 }

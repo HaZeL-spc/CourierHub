@@ -36,7 +36,9 @@ namespace CourierAPI.Models
             PostCode = location.PostCode;
             Country = location.Country;
         }
-        public int Id { get; set; }
+
+
+		public int Id { get; set; }
         public required string Street { get; set; }
         public required string StreetNumber { get; set; }
         public required string City { get; set; }

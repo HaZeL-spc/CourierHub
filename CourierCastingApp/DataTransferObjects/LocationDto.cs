@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CourierCastingApp.Models.Forms;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace CourierCastingApp.DataTransferObjects;
@@ -30,7 +31,16 @@ public class LocationDto
         Country = country;
     }
 
-    public LocationDto()
+	public LocationDto(LocationFormModel model)
+	{
+		Street = model.Street;
+		StreetNumber = model.StreetNumber;
+		City = model.City;
+		PostCode = model.PostCode;
+		Country = model.Country;
+	}
+
+	public LocationDto()
     {
 
     }

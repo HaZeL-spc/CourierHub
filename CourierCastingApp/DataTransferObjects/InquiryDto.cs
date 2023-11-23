@@ -1,18 +1,40 @@
-﻿namespace CourierCastingApp.DataTransferObjects;
+﻿using CourierCastingApp.Models.Forms;
+
+namespace CourierCastingApp.DataTransferObjects;
 
 public record InquiryDto(
-    double DimX,
-    double DimY,
-    double DimZ,
-    double Weight,
-    DateTime DeliveryDate,
-    string Name,
-    LocationDto StartLocation,
-    LocationDto EndLocation,
-    bool HightPriority,
-    bool WeekendDelivery,
-    int Id
-);
+	double DimX,
+	double DimY,
+	double DimZ,
+	double Weight,
+	DateTime DeliveryDate,
+	string Name,
+	LocationDto StartLocation,
+	LocationDto EndLocation,
+	bool HightPriority,
+	bool WeekendDelivery,
+	int Id
+)
+{
+	// Your custom constructor
+	public InquiryDto(InquiryFormModel model) : this(
+	DimX: model.DimX,
+	DimY: model.DimY,
+	DimZ: model.DimZ,
+	Weight: model.Weight,
+	DeliveryDate: model.DeliveryDate.ToDateTime(model.DeliveryTime),
+	Name: model.Name,
+	StartLocation: new LocationDto(model.StartLocation),
+	EndLocation: new LocationDto(model.EndLocation),
+	HightPriority: model.HighPriority,
+	WeekendDelivery: model.WeekendDelivery,
+	Id: 2
+)
+	{
+		// Additional logic in the constructor if needed
+	}
+}
+
 
 
 
