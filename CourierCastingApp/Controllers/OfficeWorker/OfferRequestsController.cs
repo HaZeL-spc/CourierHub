@@ -1,4 +1,6 @@
-﻿using CourierCastingApp.Helpers;
+﻿using CourierCastingApp.Clients;
+using CourierCastingApp.DataTransferObjects;
+using CourierCastingApp.Helpers;
 using CourierCastingApp.Services;
 using CourierCastingApp.ViewModels;
 using Humanizer;
@@ -11,11 +13,14 @@ namespace CourierCastingApp.Controllers.OfficeWorker
     {
         private IDeliveryRepository _deliveryRepository;
         private IInquiryRepository _inquiryRepository;
+        private IInquiriesClient _inquiriesClient;
         public OfferRequestsController(
             IDeliveryRepository deliveryRepository,
-            IInquiryRepository inquiryRepository
+            IInquiryRepository inquiryRepository,
+            IInquiriesClient inquiriesClient
             )
         {
+            _inquiriesClient = inquiriesClient;
             _deliveryRepository = deliveryRepository;
             _inquiryRepository = inquiryRepository;
         }
@@ -62,6 +67,41 @@ namespace CourierCastingApp.Controllers.OfficeWorker
 
             else
                 return NotFound();
+        }
+
+        public async Task<IActionResult> AcceptInquiry(InquiryVm i)
+        {
+            // make converter? i cannot use constructor cause vm and dto can depend on each other both ways
+
+            InquiryDto inquiry = new InquiryDto(i.DimX, i.DimY, i.DimZ, i.Weight, i.DeliveryDate, i.Name,
+                new LocationDto
+                {
+                    City = i.EndLocation.City,
+                    Country = i.EndLocation.Country,
+                    PostCode = i.EndLocation.PostCode,
+                    Street = i.EndLocation.Street,
+                    StreetNumber = i.EndLocation.StreetNumber
+                },
+                new LocationDto
+                {
+                    City = i.StartLocation.City,
+                    Country = i.StartLocation.Country,
+                    PostCode = i.StartLocation.PostCode,
+                    Street = i.StartLocation.Street,
+                    StreetNumber = i.StartLocation.StreetNumber
+                },
+                i.HightPriority, i.WeekendDelivery, i.Id
+                );
+
+            var logicResult = await _inquiriesClient.AcceptInquiry(inquiry);
+
+            if (logicResult.Success)
+            {
+                var indexResult = await Index();
+                return indexResult;
+            }
+            else
+                return StatusCode(500, $"Internal Server Error: {logicResult.Error}");
         }
     }
 }

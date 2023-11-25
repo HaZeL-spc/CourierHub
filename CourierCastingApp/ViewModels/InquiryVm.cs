@@ -57,5 +57,25 @@ namespace CourierCastingApp.ViewModels
         {
             return WeekendDelivery ? "Tak" : "Nie";
         }
+
+        public string Data()
+        {
+            var dataObject = new
+            {
+                DimX,
+                DimY,
+                DimZ,
+                Weight,
+                DeliveryDate,
+                Name,
+                StartLocation,
+                EndLocation,
+                HightPriority,
+                WeekendDelivery,
+                Id
+            };
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(dataObject);
+            return data;
+        }
     }
 }

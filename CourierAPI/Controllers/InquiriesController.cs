@@ -1,4 +1,6 @@
-﻿using CourierAPI.Services;
+﻿using CourierAPI.Helpers;
+using CourierAPI.Models;
+using CourierAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +24,11 @@ namespace CourierAPI.Controllers
                 return Ok(result.Value);
             else
                 return NotFound();
+        }
+
+        public async Task<Result> AcceptInquiry(InquiryDTO inquiry)
+        {
+            return Result.Ok();
         }
     }
 }

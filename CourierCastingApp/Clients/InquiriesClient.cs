@@ -1,13 +1,15 @@
 ﻿using CourierCastingApp.DataTransferObjects;
 using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
+using System.Text;
+using System.Text.Json;
 
 namespace CourierCastingApp.Clients
 {
     public interface IInquiriesClient
     {
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
-        //public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
+        public Task<Result> AcceptInquiry(InquiryDto inquiry);
     }
 
     public class InquiriesClient : IInquiriesClient
@@ -30,6 +32,23 @@ namespace CourierCastingApp.Clients
                 return inquiries == null ? Result.Fail<IEnumerable<InquiryDto>>("Resource not found") : Result.Ok(inquiries);
             }
             return Result.Fail<IEnumerable<InquiryDto>>("Failed to get response");
+        }
+
+        public async Task<Result> AcceptInquiry(InquiryDto inquiry)
+        {
+            var uri = _configuration.GetSection("DefaultURIs")["AcceptInquiryURI"];
+
+            var requestBody = new { inquiry = inquiry };
+
+            // Serialize the request body to JSON
+            var jsonRequest = JsonSerializer.Serialize(requestBody);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync(uri, content);
+
+            return response.IsSuccessStatusCode
+                ? Result.Ok()
+                : Result.Fail("Failed to accept inquiry.");
         }
     }
 }
