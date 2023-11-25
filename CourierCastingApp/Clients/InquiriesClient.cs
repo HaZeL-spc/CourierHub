@@ -27,6 +27,7 @@ namespace CourierCastingApp.Clients
         public async Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries()
         {
             var response = await _client.GetAsync(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!);
+			System.Diagnostics.Debug.WriteLine(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!);
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<InquiryDto>? inquiries = await response.Content.ReadFromJsonAsync<IEnumerable<InquiryDto>>();
@@ -42,6 +43,7 @@ namespace CourierCastingApp.Clients
 				// Convert the object to JSON
 				var jsonInquiry = JsonConvert.SerializeObject(newInquiry);
 				var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+				var myUrl = _configuration.GetSection("DefaultURIs")["InquiriesURI"];
 
 				// POST request
 				var response = await _client.PostAsync(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!, content);

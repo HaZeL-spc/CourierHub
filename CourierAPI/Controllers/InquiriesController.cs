@@ -20,18 +20,23 @@ namespace CourierAPI.Controllers
         {
             var result = await _inquiryRepository.GetAllInquiries(cancellationToken);
             if (result.Success)
-                return Ok(result.Value);
+                return Ok(result.Value );
             else
                 return NotFound();
         }
 
 		[HttpPost]
-		public IActionResult AddInquiry([FromBody] InquiryDTO data)
+		public async Task<ActionResult<InquiryDTO>> CreateInquiry([FromBody] InquiryDTO inquiryDto)
 		{
-			// Handle the incoming data
-			// Perform necessary operations
-			// Return a response
-			return Ok("Data received successfully");
+            //var result = await _inquiryService.CreateInquiry(inquiryDto);
+            //if (result.IsSuccess)
+            //{
+            //	return CreatedAtAction(nameof(GetAllInquiries), result.Value);
+            //}
+
+			Console.WriteLine("yeah");
+
+            return Ok("yes");
 		}
 	}
 }

@@ -42,6 +42,10 @@ public class LocationDto
 
 	public LocationDto()
     {
-
-    }
+        Street = "";
+		StreetNumber = "";
+		City = "";
+		PostCode = "";
+		Country = "";
+	}
 }

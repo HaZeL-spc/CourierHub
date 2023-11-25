@@ -9,7 +9,7 @@ namespace CourierCastingApp.Services
     {
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
         //public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
-        //public Task<Result> AddInquiry(InquiryDto inquiry);
+        public Task<Result> CreateInquiry(InquiryDto inquiry);
         //public Task<Result> UpdateDelivery(DeliveryDto employee);
         //public Task<Result> DeleteDelivery(int deliveryId);
     }
@@ -28,10 +28,10 @@ namespace CourierCastingApp.Services
             return await _inquiriesClient.GetAllInquiries();
         }
 
-  //      public async Task<Result> AddInquiry(InquiryDto inquiry)
-  //      {
-  //          return await _inquiriesClient.CreateInquiry();
+        public async Task<Result> CreateInquiry(InquiryDto inquiry)
+        {
+            return await _inquiriesClient.CreateInquiry(inquiry);
 
-		//}
-	}
+        }
+    }
 }

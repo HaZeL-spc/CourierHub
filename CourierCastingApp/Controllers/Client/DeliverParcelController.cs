@@ -31,7 +31,7 @@ namespace CourierCastingApp.Controllers.Client
 
 
 				InquiryDto inquiryDto = new InquiryDto(model);
-
+				_inquiryRepository.CreateInquiry(inquiryDto);
 			}
 
 			return View(model); // Return to the same view with validation error messages.

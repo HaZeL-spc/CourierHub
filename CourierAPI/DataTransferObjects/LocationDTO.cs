@@ -37,6 +37,15 @@ namespace CourierAPI.Models
             Country = location.Country;
         }
 
+		[SetsRequiredMembers]
+		public LocationDTO()
+		{
+			Street = "";
+			StreetNumber = "";
+			City = "";
+			PostCode = "";
+			Country = "";
+		}
 
 		public int Id { get; set; }
         public required string Street { get; set; }

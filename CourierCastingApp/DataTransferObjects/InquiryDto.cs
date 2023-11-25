@@ -33,6 +33,10 @@ public record InquiryDto(
 	{
 		// Additional logic in the constructor if needed
 	}
+
+	public InquiryDto() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDto(), new LocationDto(), false, false, 0)
+	{
+	}
 }
 
 
