@@ -28,13 +28,13 @@ namespace CourierAPI.Controllers
 		[HttpPost]
 		public async Task<ActionResult<InquiryDTO>> CreateInquiry([FromBody] InquiryDTO inquiryDto)
 		{
-            //var result = await _inquiryService.CreateInquiry(inquiryDto);
-            //if (result.IsSuccess)
-            //{
-            //	return CreatedAtAction(nameof(GetAllInquiries), result.Value);
-            //}
+            var result = await _inquiryRepository.AddInquiry(inquiryDto);
+            if (result.Success)
+            {
+                return Ok("Inquiry added successfully.");
+			}
 
-			Console.WriteLine("yeah");
+            Console.WriteLine("yeah");
 
             return Ok("yes");
 		}

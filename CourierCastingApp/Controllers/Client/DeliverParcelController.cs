@@ -29,9 +29,11 @@ namespace CourierCastingApp.Controllers.Client
 
 				// Create DateTime variable by combining DateOnly and TimeOnly
 
-
 				InquiryDto inquiryDto = new InquiryDto(model);
 				_inquiryRepository.CreateInquiry(inquiryDto);
+
+				TempData["SuccessMessage"] = "Inquiry created successfully!";
+				return RedirectToAction("Index");
 			}
 
 			return View(model); // Return to the same view with validation error messages.
