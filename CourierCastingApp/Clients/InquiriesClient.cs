@@ -9,7 +9,7 @@ namespace CourierCastingApp.Clients
     public interface IInquiriesClient
     {
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
-		public Task<Result<InquiryDto>> CreateInquiry(InquiryDto newInquiry);
+		public Task<Result> CreateInquiry(InquiryDto newInquiry);
 		//public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
 	}
 
@@ -27,7 +27,6 @@ namespace CourierCastingApp.Clients
         public async Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries()
         {
             var response = await _client.GetAsync(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!);
-			System.Diagnostics.Debug.WriteLine(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!);
             if (response.IsSuccessStatusCode)
             {
                 IEnumerable<InquiryDto>? inquiries = await response.Content.ReadFromJsonAsync<IEnumerable<InquiryDto>>();
@@ -36,7 +35,7 @@ namespace CourierCastingApp.Clients
             return Result.Fail<IEnumerable<InquiryDto>>("Failed to get response");
         }
 
-		public async Task<Result<InquiryDto>> CreateInquiry(InquiryDto newInquiry)
+		public async Task<Result> CreateInquiry(InquiryDto newInquiry)
 		{
 			try
 			{
@@ -50,15 +49,15 @@ namespace CourierCastingApp.Clients
 
 				if (response.IsSuccessStatusCode)
 				{
-					InquiryDto createdInquiry = await response.Content.ReadFromJsonAsync<InquiryDto>();
-					return createdInquiry == null ? Result.Fail<InquiryDto>("Failed to create inquiry") : Result.Ok(createdInquiry);
+					//InquiryDto? createdInquiry = await response.Content.ReadFromJsonAsync<InquiryDto>();
+					return /*createdInquiry == null ? Result.Fail("Failed to create inquiry") :*/ Result.Ok();
 				}
 
-				return Result.Fail<InquiryDto>($"Failed to create inquiry. Status code: {response.StatusCode}");
+				return Result.Fail($"Failed to create inquiry. Status code: {response.StatusCode}");
 			}
 			catch (Exception ex)
 			{
-				return Result.Fail<InquiryDto>($"Error: {ex.Message}");
+				return Result.Fail($"Error: {ex.Message}");
 			}
 		}
 	}

@@ -43,8 +43,8 @@ public class InquiryRepository : IInquiryRepository
 				.Select(x => new InquiryDTO(
 					x.DimX, x.DimY, x.DimZ,
 					x.Weight, x.DeliveryDate,
-					x.Name, new LocationDTO(x.StartLocation),
-					new LocationDTO(x.EndLocation),
+					x.Name, new LocationDTO(x.StartLocation!),
+					new LocationDTO(x.EndLocation!),
 					x.HightPriority, x.WeekendDelivery, x.Id))
 				.ToListAsync(cancellationToken);
 
@@ -66,7 +66,7 @@ public class InquiryRepository : IInquiryRepository
 
 			return Result.Ok("Inquiry added successfully.");
 		}
-		catch (Exception ex)
+		catch
 		{
 			// Log the exception
 			return Result.Fail("Failed to add inquiry.");

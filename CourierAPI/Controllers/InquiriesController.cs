@@ -26,7 +26,7 @@ namespace CourierAPI.Controllers
         }
 
 		[HttpPost]
-		public async Task<ActionResult<InquiryDTO>> CreateInquiry([FromBody] InquiryDTO inquiryDto)
+		public async Task<IActionResult> CreateInquiry([FromBody] InquiryDTO inquiryDto)
 		{
             var result = await _inquiryRepository.AddInquiry(inquiryDto);
             if (result.Success)
@@ -34,9 +34,7 @@ namespace CourierAPI.Controllers
                 return Ok("Inquiry added successfully.");
 			}
 
-            Console.WriteLine("yeah");
-
-            return Ok("yes");
+            return Ok("Failed to add inquiry");
 		}
 	}
 }
