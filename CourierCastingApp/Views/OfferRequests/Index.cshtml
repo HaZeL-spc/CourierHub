@@ -25,13 +25,13 @@
     <script>
         $(document).ready(function () {
             $('.accept-btn').click(function () {
-                var inquiryModel = $(this).data('model');
+                var inquiryModel = JSON.stringify($(this).data('model'));
 
                 // Perform an AJAX call to the AcceptInquiry action
                 $.ajax({
                     url: '@Url.Action("AcceptInquiry", "OfferRequests")', // Generate the URL for the AcceptInquiry action
                     method: 'POST', // Change method if needed (POST/GET)
-                    data: JSON.stringify(inquiryModel),
+                    data: inquiryModel,
                     success: function (response) {
                         // Handle success response
                         console.log('Inquiry accepted:', response);

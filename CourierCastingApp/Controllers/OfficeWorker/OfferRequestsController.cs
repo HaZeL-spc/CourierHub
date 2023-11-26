@@ -69,6 +69,7 @@ namespace CourierCastingApp.Controllers.OfficeWorker
                 return NotFound();
         }
 
+        [HttpPost]
         public async Task<IActionResult> AcceptInquiry(InquiryVm i)
         {
             // make converter? i cannot use constructor cause vm and dto can depend on each other both ways
