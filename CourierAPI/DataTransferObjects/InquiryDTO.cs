@@ -13,10 +13,11 @@ namespace CourierAPI.Models
 		LocationDTO EndLocation,
 		bool HightPriority,
 		bool WeekendDelivery,
+		CourierDTO Courier,
 		int Id
 		)
 	{
-		public InquiryDTO() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDTO(), new LocationDTO(), false, false, 0)
+		public InquiryDTO() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDTO(), new LocationDTO(), false, false, new CourierDTO(), 0)
 		{
 		}
 	}

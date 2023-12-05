@@ -13,7 +13,9 @@ namespace CourierAPI.Helpers
             context.Database.EnsureCreated();
             AddDeliveries(context);
             AddInquiries(context);
-        }
+            AddCouriers(context);
+
+		}
         private static void AddDeliveries(DeliverymanCastingDbContext context)
         {
             if (context.Deliveries.FirstOrDefault() != null) return;
@@ -76,8 +78,44 @@ namespace CourierAPI.Helpers
                 StartLocation = new Location("Ruska", "78", "Suwalken", "16-400", "Polska"),
                 EndLocation = new Location("Czeska", "4", "Vilnus", "113-441", "Litwa"),
             });
+        }
 
-            
+        private static void AddCouriers(DeliverymanCastingDbContext context)
+        {
+            if (context.Couriers.FirstOrDefault() != null) return;
+
+            context.Couriers.Add(new Courier
+            {
+                Cena = 20,
+                CenaHighPriority = 30,
+                CzyWeekend = true,
+                Workload = 0,
+                MaxPackages = 5,
+                Start = "Warszawa",
+                End = "Płock"
+            });
+
+            context.Couriers.Add(new Courier
+            {
+                Cena = 15,
+                CenaHighPriority = 32,
+                CzyWeekend = false,
+                Workload = 0,
+                MaxPackages = 7,
+                Start = "Płock",
+                End = "Warszawa"
+            });
+
+            context.Couriers.Add(new Courier
+            {
+                Cena = 70,
+                CenaHighPriority = 80,
+                CzyWeekend = true,
+                Workload = 0,
+                MaxPackages = 12,
+                Start = "Warszawa",
+                End = "Wrocław"
+            });
 
             context.SaveChanges();
         }

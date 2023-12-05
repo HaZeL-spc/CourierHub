@@ -45,7 +45,8 @@ public class InquiryRepository : IInquiryRepository
 					x.Weight, x.DeliveryDate,
 					x.Name, new LocationDTO(x.StartLocation),
 					new LocationDTO(x.EndLocation),
-					x.HightPriority, x.WeekendDelivery, x.Id))
+					x.HightPriority, x.WeekendDelivery,
+					new CourierDTO(x.Courier), x.Id))
 				.ToListAsync(cancellationToken);
 
 			return Result.Ok<IEnumerable<InquiryDTO>>(inquiries);

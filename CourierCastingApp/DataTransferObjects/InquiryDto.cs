@@ -13,7 +13,8 @@ public record InquiryDto(
 	LocationDto EndLocation,
 	bool HightPriority,
 	bool WeekendDelivery,
-	int Id
+    CourierDto Courier,
+    int Id
 )
 {
 	// Your custom constructor
@@ -28,13 +29,14 @@ public record InquiryDto(
 	EndLocation: new LocationDto(model.EndLocation),
 	HightPriority: model.HighPriority,
 	WeekendDelivery: model.WeekendDelivery,
+	Courier: new CourierDto(),
 	Id: 2
 )
 	{
 		// Additional logic in the constructor if needed
 	}
 
-	public InquiryDto() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDto(), new LocationDto(), false, false, 0)
+	public InquiryDto() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDto(), new LocationDto(), false, false, new CourierDto(), 0)
 	{
 	}
 }

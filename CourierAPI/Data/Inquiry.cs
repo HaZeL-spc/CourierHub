@@ -59,6 +59,7 @@ namespace CourierAPI.Data
         public virtual Location? EndLocation { get; init; } = new();
         public bool HightPriority { get; init; }
         public bool WeekendDelivery { get; init; }
+        public Courier? Courier { get; set; }
         public int Id { get; init; }
     }
 
