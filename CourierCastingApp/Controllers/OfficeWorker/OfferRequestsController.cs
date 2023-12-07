@@ -70,7 +70,7 @@ namespace CourierCastingApp.Controllers.OfficeWorker
         }
 
         [HttpPost]
-        public async Task<IActionResult> AcceptInquiry(InquiryVm i)
+        public async Task<IActionResult> AcceptInquiry([FromBody] InquiryVm i)
         {
             // make converter? i cannot use constructor cause vm and dto can depend on each other both ways
 
@@ -94,12 +94,11 @@ namespace CourierCastingApp.Controllers.OfficeWorker
                 i.HightPriority, i.WeekendDelivery, i.Id
                 );
 
-            var logicResult = await _inquiriesClient.AcceptInquiry(inquiry);
+            var logicResult = await _inquiryRepository.AcceptInquiry(inquiry);
 
             if (logicResult.Success)
             {
-                var indexResult = await Index();
-                return indexResult;
+                return RedirectToAction("Index");
             }
             else
                 return StatusCode(500, $"Internal Server Error: {logicResult.Error}");

@@ -1,5 +1,7 @@
 ﻿using CourierCastingApp.DataTransferObjects;
+using CourierCastingApp.Helpers;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace CourierCastingApp.ViewModels
 {

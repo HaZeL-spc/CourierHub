@@ -1,4 +1,5 @@
 ﻿using CourierAPI.Helpers;
+using CourierAPI.Logic;
 using CourierAPI.Models;
 using CourierAPI.Services;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +12,11 @@ namespace CourierAPI.Controllers
     public class InquiriesController : ControllerBase
     {
         private readonly IInquiryRepository _inquiryRepository;
-        public InquiriesController(IInquiryRepository inquiryRepository)
+        private readonly IInquiriesLogic _logic;
+        public InquiriesController(IInquiryRepository inquiryRepository, IInquiriesLogic inquiriesLogic)
         {
             _inquiryRepository = inquiryRepository;
+            _logic = inquiriesLogic;
         }
 
         [HttpGet]
@@ -21,14 +24,29 @@ namespace CourierAPI.Controllers
         {
             var result = await _inquiryRepository.GetAllInquiries(cancellationToken);
             if (result.Success)
-                return Ok(result.Value);
+                return Ok(result.Value );
             else
                 return NotFound();
         }
 
-        public async Task<Result> AcceptInquiry(InquiryDTO inquiry)
+		[HttpPost]
+        [Route("CreateInquiry")]
+		public async Task<IActionResult> CreateInquiry([FromBody] InquiryDTO inquiryDto)
+		{
+            var result = await _inquiryRepository.AddInquiry(inquiryDto);
+            if (result.Success)
+            {
+                return Ok("Inquiry added successfully.");
+			}
+
+            return Ok("Failed to add inquiry");
+		}
+
+        [HttpPost]
+        [Route("AcceptInquiry")]
+        public async Task<Result> AcceptInquiry([FromBody] InquiryDTO inquiry, CancellationToken cancellationToken)
         {
-            return Result.Ok();
+            return await _logic.AcceptInquiry(inquiry, cancellationToken);
         }
     }
 }

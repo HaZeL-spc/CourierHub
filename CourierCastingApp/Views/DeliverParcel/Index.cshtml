@@ -1,5 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Delivery Parcel";
+﻿@model CourierCastingApp.Models.Forms.InquiryFormModel
+@{
+	ViewData["Title"] = "Delivery Parcel";
 }
 
 <div><h1>deliver parcel</h1></div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@await Html.PartialAsync("_PartialDeliverForm")
+
+@section Scripts {
+	<script src="~/js/deliverForm.js"></script>
+}

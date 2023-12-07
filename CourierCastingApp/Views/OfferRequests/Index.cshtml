@@ -29,9 +29,14 @@
 
                 // Perform an AJAX call to the AcceptInquiry action
                 $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
                     url: '@Url.Action("AcceptInquiry", "OfferRequests")', // Generate the URL for the AcceptInquiry action
                     method: 'POST', // Change method if needed (POST/GET)
                     data: inquiryModel,
+                    dataType: 'json',
                     success: function (response) {
                         // Handle success response
                         console.log('Inquiry accepted:', response);

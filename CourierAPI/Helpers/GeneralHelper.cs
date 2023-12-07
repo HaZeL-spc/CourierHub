@@ -15,6 +15,13 @@ public class RequiredEnumAttribute : RequiredAttribute
         return type.IsEnum && Enum.IsDefined(type, value);
     }
 }
+
+public enum InquiryStatus
+{
+    NotConsidered = 0,
+    Accepted = 1,
+    Rejected = 2
+}
 public enum DeliveryStatus
 {
     NotPickedUp = 0,
