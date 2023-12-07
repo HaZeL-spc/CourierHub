@@ -1,0 +1,127 @@
+﻿@model CourierCastingApp.Models.Forms.InquiryFormModel
+
+@using (Html.BeginForm("Index", "DeliverParcel", FormMethod.Post))
+{
+	<div class="form-group">
+		<label asp-for="DimX">Dimension X</label>
+		<input asp-for="DimX" class="form-control" />
+		<span asp-validation-for="DimX" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="DimY">Dimension Y</label>
+		<input asp-for="DimY" class="form-control" />
+		<span asp-validation-for="DimY" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="DimZ">Dimension Z</label>
+		<input asp-for="DimZ" class="form-control" />
+		<span asp-validation-for="DimZ" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Weight">Weight</label>
+		<input asp-for="Weight" class="form-control" />
+		<span asp-validation-for="Weight" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="DeliveryDate">Delivery Date</label>
+		<div class="input-group date" data-provide="datepicker">
+			<input asp-for="DeliveryDate" class="form-control" />
+			<div class="input-group-addon">
+				<span class="glyphicon glyphicon-th"></span>
+			</div>
+		</div>
+		<span asp-validation-for="DeliveryDate" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="DeliveryTime">Delivery Time</label>
+		<div class="input-group timepicker">
+			<input asp-for="DeliveryTime" class="form-control" />
+			<div class="input-group-append">
+				<span class="input-group-text">
+					<i class="fa fa-clock-o"></i>
+				</span>
+			</div>
+		</div>
+		<span asp-validation-for="DeliveryTime" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Name">Name</label>
+		<input asp-for="Name" class="form-control" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="WeekendDelivery">Delivery at Weekend</label>
+		<div class="custom-control custom-checkbox">
+			<input asp-for="WeekendDelivery" class="custom-control-input" type="checkbox" id="chkIsDeliveryAtWeekend">
+			<label class="custom-control-label" for="chkIsDeliveryAtWeekend">Yes</label>
+		</div>
+		<span asp-validation-for="WeekendDelivery" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="HighPriority">High Priority</label>
+		<div class="custom-control custom-checkbox">
+			<input asp-for="HighPriority" class="custom-control-input" type="checkbox" id="chkHighPriority">
+			<label class="custom-control-label" for="chkHighPriority">Yes</label>
+		</div>
+		<span asp-validation-for="HighPriority" class="text-danger"></span>
+	</div>
+
+	<!-- Repeat the above structure for other properties of InquiryFormModel -->
+
+	<div class="form-group">
+		<h4>Start Location</h4>
+		<label asp-for="StartLocation.Street">Street</label>
+		<input asp-for="StartLocation.Street" class="form-control" />
+		<span asp-validation-for="StartLocation.Street" class="text-danger"></span>
+
+		<label asp-for="StartLocation.StreetNumber">StreetNumber</label>
+		<input asp-for="StartLocation.StreetNumber" class="form-control" />
+		<span asp-validation-for="StartLocation.StreetNumber" class="text-danger"></span>
+
+		<label asp-for="StartLocation.City">City</label>
+		<input asp-for="StartLocation.City" class="form-control" />
+		<span asp-validation-for="StartLocation.City" class="text-danger"></span>
+
+		<label asp-for="StartLocation.PostCode">PostCode</label>
+		<input asp-for="StartLocation.PostCode" class="form-control" />
+		<span asp-validation-for="StartLocation.PostCode" class="text-danger"></span>
+
+		<label asp-for="StartLocation.Country">Country</label>
+		<input asp-for="StartLocation.Country" class="form-control" />
+		<span asp-validation-for="StartLocation.Country" class="text-danger"></span>
+
+
+
+		<h4>End Location</h4>
+		<label asp-for="EndLocation.Street">Street</label>
+		<input asp-for="EndLocation.Street" class="form-control" />
+		<span asp-validation-for="EndLocation.Street" class="text-danger"></span>
+
+		<label asp-for="EndLocation.StreetNumber">StreetNumber</label>
+		<input asp-for="EndLocation.StreetNumber" class="form-control" />
+		<span asp-validation-for="EndLocation.StreetNumber" class="text-danger"></span>
+
+		<label asp-for="EndLocation.City">City</label>
+		<input asp-for="EndLocation.City" class="form-control" />
+		<span asp-validation-for="EndLocation.City" class="text-danger"></span>
+
+		<label asp-for="EndLocation.PostCode">PostCode</label>
+		<input asp-for="EndLocation.PostCode" class="form-control" />
+		<span asp-validation-for="EndLocation.PostCode" class="text-danger"></span>
+
+		<label asp-for="EndLocation.Country">Country</label>
+		<input asp-for="EndLocation.Country" class="form-control" />
+		<span asp-validation-for="EndLocation.Country" class="text-danger"></span>
+
+	</div>
+
+	<button type="submit" class="btn btn-primary">Create Inquiry</button>
+}
