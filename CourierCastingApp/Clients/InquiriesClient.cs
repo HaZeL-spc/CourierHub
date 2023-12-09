@@ -9,7 +9,7 @@ namespace CourierCastingApp.Clients
     public interface IInquiriesClient
     {
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
-		public Task<Result<InquiryDto>> CreateInquiry(InquiryDto newInquiry);
+		public Task<Result<string>> CreateInquiry(InquiryDto newInquiry);
 		//public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
 	}
 
@@ -36,7 +36,7 @@ namespace CourierCastingApp.Clients
             return Result.Fail<IEnumerable<InquiryDto>>("Failed to get response");
         }
 
-		public async Task<Result<InquiryDto>> CreateInquiry(InquiryDto newInquiry)
+		public async Task<Result<string>> CreateInquiry(InquiryDto newInquiry)
 		{
 			try
 			{
@@ -50,15 +50,16 @@ namespace CourierCastingApp.Clients
 
 				if (response.IsSuccessStatusCode)
 				{
-					InquiryDto createdInquiry = await response.Content.ReadFromJsonAsync<InquiryDto>();
-					return createdInquiry == null ? Result.Fail<InquiryDto>("Failed to create inquiry") : Result.Ok(createdInquiry);
-				}
+                    return response.IsSuccessStatusCode ? 
+                        Result.Ok(response.Content.ToString()) : 
+                        Result.Fail<string>($"Failed to create inquiry. Status code: {response.StatusCode}");
+                }
 
-				return Result.Fail<InquiryDto>($"Failed to create inquiry. Status code: {response.StatusCode}");
+				return Result.Fail<string>($"Failed to create inquiry. Status code: {response.StatusCode}");
 			}
 			catch (Exception ex)
 			{
-				return Result.Fail<InquiryDto>($"Error: {ex.Message}");
+				return Result.Fail<string>($"Error: {ex.Message}");
 			}
 		}
 	}

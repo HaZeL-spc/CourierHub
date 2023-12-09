@@ -12,14 +12,22 @@ namespace CourierCastingApp.ViewModels
 		// Include CourierViewModel
 		public CourierVm[] BestCouriers { get; set; }
 
-		public bool validateInquiryModel()
+        public InquiryResultVm()
+        {
+			this.InquiryModel = new InquiryFormModel();
+			this.Success = false;
+			this.Message = string.Empty;
+			this.BestCouriers = new CourierVm[0];
+        }
+
+        public bool validateInquiryModel()
 		{
-            // Explicitly validate InquiryModel
-            var validationContext = new ValidationContext(InquiryModel, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(InquiryModel, validationContext, validationResults, validateAllProperties: true);
+			// Explicitly validate InquiryModel
+			var validationContext = new ValidationContext(InquiryModel, serviceProvider: null, items: null);
+			var validationResults = new List<ValidationResult>();
+			bool isValid = Validator.TryValidateObject(InquiryModel, validationContext, validationResults, validateAllProperties: true);
 
 			return isValid;
-        }
+		}
 	}
 }

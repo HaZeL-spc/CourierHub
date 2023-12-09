@@ -1,27 +1,80 @@
 ﻿@model CourierCastingApp.ViewModels.InquiryResultVm;
 
-@using (Html.BeginForm("GetBestCourier", "DeliverParcel", FormMethod.Post))
+@if (Model != null && Model.Success)
+{
+    @for (int i = 0; i < Model.BestCouriers.Length; i++)
+    {
+        var courier = Model.BestCouriers[i];
+
+        <div class="courier-form">
+            <p>Drivers route: @courier.Start-@courier.End</p>
+            @if (Model.InquiryModel.HighPriority)
+            {
+                <p>Cost: @courier.CenaHighPriority</p>
+            }
+            else
+            {
+                <p>Cost: @courier.Cena</p>
+            }
+
+            @using (Html.BeginForm("AddInquiryForm", "DeliverParcel", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.InquiryModel)
+                @Html.HiddenFor(model => model.InquiryModel.StartLocation.Street)
+                @Html.HiddenFor(model => model.InquiryModel.StartLocation.StreetNumber)
+                @Html.HiddenFor(model => model.InquiryModel.StartLocation.City)
+                @Html.HiddenFor(model => model.InquiryModel.StartLocation.PostCode)
+                @Html.HiddenFor(model => model.InquiryModel.StartLocation.Country)
+                @Html.HiddenFor(model => model.InquiryModel.EndLocation.Street)
+                @Html.HiddenFor(model => model.InquiryModel.EndLocation.StreetNumber)
+                @Html.HiddenFor(model => model.InquiryModel.EndLocation.City)
+                @Html.HiddenFor(model => model.InquiryModel.EndLocation.PostCode)
+                @Html.HiddenFor(model => model.InquiryModel.EndLocation.Country)
+                @Html.HiddenFor(model => model.InquiryModel.Name)
+                @Html.HiddenFor(model => model.BestCouriers[i].Id)
+                @Html.HiddenFor(model => model.BestCouriers[i].Start)
+                @Html.HiddenFor(model => model.BestCouriers[i].End)
+                @Html.HiddenFor(model => model.BestCouriers[i].Cena)
+                @Html.HiddenFor(model => model.BestCouriers[i].CenaHighPriority)
+                @Html.HiddenFor(model => model.BestCouriers[i].CzyWeekend)
+                @Html.HiddenFor(model => model.BestCouriers[i].Workload)
+                @Html.HiddenFor(model => model.BestCouriers[i].MaxPackages)
+                @Html.HiddenFor(courierId => i)
+                <input type="submit" class="btn btn-primary" value="Select Courier" />
+            }
+        </div>
+    }
+}
+
+@if (Model != null && Model.Message == "No couriers")
+{
+    <div class="alert alert-danger">
+        <h3>Couldn't find courier with this route</h3>
+    </div>
+}
+
+@using (Html.BeginForm("GetBestCourier", "DeliverParcel", FormMethod.Post, new { id = "InquiryForm" }))
 {
     <div class="form-group">
-        <label asp-for="InquiryModel.DimX">Dimension X</label>
+        <label asp-for="InquiryModel.DimX">Dimension X (cm)</label>
         <input asp-for="InquiryModel.DimX" class="form-control" />
         <span asp-validation-for="InquiryModel.DimX" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="InquiryModel.DimY">Dimension Y</label>
+        <label asp-for="InquiryModel.DimY">Dimension Y (cm)</label>
         <input asp-for="InquiryModel.DimY" class="form-control" />
         <span asp-validation-for="InquiryModel.DimY" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="InquiryModel.DimZ">Dimension Z</label>
+        <label asp-for="InquiryModel.DimZ">Dimension Z (cm)</label>
         <input asp-for="InquiryModel.DimZ" class="form-control" />
         <span asp-validation-for="InquiryModel.DimZ" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="InquiryModel.Weight">Weight</label>
+        <label asp-for="InquiryModel.Weight">Weight (gram)</label>
         <input asp-for="InquiryModel.Weight" class="form-control" />
         <span asp-validation-for="InquiryModel.Weight" class="text-danger"></span>
     </div>
@@ -54,15 +107,6 @@
         <label asp-for="InquiryModel.Name">Name</label>
         <input asp-for="InquiryModel.Name" class="form-control" />
         <span asp-validation-for="InquiryModel.Name" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="InquiryModel.WeekendDelivery">Delivery at Weekend</label>
-        <div class="custom-control custom-checkbox">
-            <input asp-for="InquiryModel.WeekendDelivery" class="custom-control-input" type="checkbox" id="chkIsDeliveryAtWeekend">
-            <label class="custom-control-label" for="chkIsDeliveryAtWeekend">Yes</label>
-        </div>
-        <span asp-validation-for="InquiryModel.WeekendDelivery" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -124,47 +168,4 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Search Courier</button>
-}
-
-@if (Model.Success)
-{
-    @for (int i = 0; i < Model.BestCouriers.Length; i++)
-    {
-        var courier = Model.BestCouriers[i];
-
-        <div class="courier-form">
-            <p>best courier id: @courier.Id</p>
-            <p>start: @courier.Start</p>
-            <p>end: @courier.End</p>
-
-            @using (Html.BeginForm("AddInquiryForm", "DeliverParcel", FormMethod.Post))
-            {
-                @Html.HiddenFor(model => model.InquiryModel.DimX)
-                @Html.HiddenFor(model => model.InquiryModel.DimY)
-                @Html.HiddenFor(model => model.InquiryModel.DimZ)
-                @Html.HiddenFor(model => model.InquiryModel.Weight)
-                @Html.HiddenFor(model => model.InquiryModel.DeliveryDate)
-                @Html.HiddenFor(model => model.InquiryModel.DeliveryTime)
-                @Html.HiddenFor(model => model.InquiryModel.Name)
-                @Html.HiddenFor(model => model.InquiryModel.WeekendDelivery)
-                @Html.HiddenFor(model => model.InquiryModel.HighPriority)
-                        // Repeat the above line for other properties of InquiryFormModel
-
-                @Html.HiddenFor(model => model.InquiryModel.StartLocation.Street)
-                @Html.HiddenFor(model => model.InquiryModel.StartLocation.StreetNumber)
-                @Html.HiddenFor(model => model.InquiryModel.StartLocation.City)
-                @Html.HiddenFor(model => model.InquiryModel.StartLocation.PostCode)
-                @Html.HiddenFor(model => model.InquiryModel.StartLocation.Country)
-
-                @Html.HiddenFor(model => model.InquiryModel.EndLocation.Street)
-                @Html.HiddenFor(model => model.InquiryModel.EndLocation.StreetNumber)
-                @Html.HiddenFor(model => model.InquiryModel.EndLocation.City)
-                @Html.HiddenFor(model => model.InquiryModel.EndLocation.PostCode)
-                @Html.HiddenFor(model => model.InquiryModel.EndLocation.Country)
-
-                @Html.Hidden("CourierId", i)
-                <input type="submit" value="Select Courier" />
-            }
-        </div>
-    }
 }

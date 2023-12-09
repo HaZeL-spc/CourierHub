@@ -34,21 +34,15 @@ namespace CourierCastingApp.Controllers.Client
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddInquiryForm(InquiryResultVm model, int CourierId)
+		public async Task<IActionResult> AddInquiryForm(InquiryResultVm model, int courierId)
 		{
 			if (model.validateInquiryModel())
 			{
-                //DateTime combinedDateTime = model.DeliveryDate.AsDateTime()
 
-                // Create DateTime variable by combining DateOnly and TimeOnly
-
-                var viewModel = JsonConvert.DeserializeObject<InquiryResultVm>(TempData["MemoryInquiryResult"].ToString());
-                var courier = new CourierDto(viewModel.BestCouriers[CourierId]);
+				var courier = new CourierDto(model.BestCouriers[courierId]);
                 InquiryDto inquiryDto = new InquiryDto(model.InquiryModel, courier);
 
-
                 var result = await _inquiryRepository.CreateInquiry(inquiryDto);
-
 
                 if (result.Success)
 				{
@@ -68,10 +62,12 @@ namespace CourierCastingApp.Controllers.Client
 				InquiryModel = model.InquiryModel
 			};
 
-            // Explicitly validate InquiryModel
+			// Explicitly validate InquiryModel
+			if (model.validateInquiryModel())
+			{
+				bool isWeekend = checkIfWeekend(model.InquiryModel.DeliveryDate);
+				model.InquiryModel.WeekendDelivery = isWeekend;
 
-            if (model.validateInquiryModel())
-            {
                 InquiryDto inquiryDto = new InquiryDto(model.InquiryModel);
 
 				var result = await _courierRepository.GetBestCouriers(inquiryDto);
@@ -88,12 +84,20 @@ namespace CourierCastingApp.Controllers.Client
 						couriers.Add(courier);
 					}
 					viewModel.BestCouriers = couriers.ToArray();
-
-					TempData["MemoryInquiryResult"] = JsonConvert.SerializeObject(viewModel);
-					return RedirectToAction("Index");
+				} else
+				{
+					viewModel.Message = "No couriers";
 				}
+
+                TempData["MemoryInquiryResult"] = JsonConvert.SerializeObject(viewModel);
+                return RedirectToAction("Index");
             }
 			return View("Index");
         }
-	}
+        public bool checkIfWeekend(DateOnly date)
+        {
+            int day = (int)date.DayOfWeek;
+            return day == 6 || day == 0;
+        }
+    }
 }
