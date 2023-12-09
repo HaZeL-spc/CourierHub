@@ -38,11 +38,13 @@ namespace CourierCastingApp.Controllers.Client
 		{
 			if (model.validateInquiryModel())
 			{
-
 				var courier = new CourierDto(model.BestCouriers[courierId]);
                 InquiryDto inquiryDto = new InquiryDto(model.InquiryModel, courier);
 
-                var result = await _inquiryRepository.CreateInquiry(inquiryDto);
+				var result = await _inquiryRepository.CreateInquiry(inquiryDto);
+
+				if (result.isFailure)
+					return StatusCode(500);
 
                 if (result.Success)
 				{
