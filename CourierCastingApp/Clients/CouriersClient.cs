@@ -7,7 +7,7 @@ namespace CourierCastingApp.Clients
 {
     public interface ICouriersClient
     {
-        public Task<Result<CourierDto>> GetBestCourier(InquiryDto inquiry);
+        public Task<Result<List<CourierDto>>> GetBestCouriers(InquiryDto inquiry);
     }
 
     public class CouriersClient : ICouriersClient
@@ -21,17 +21,23 @@ namespace CourierCastingApp.Clients
             _configuration = configuration;
         }
 
-        public async Task<Result<CourierDto>> GetBestCourier(InquiryDto inquiry)
+		public async Task<Result<List<CourierDto>>> GetBestCouriers(InquiryDto inquiry)
 		{
-            string queryParams = $"start={inquiry.StartLocation.City}&end={inquiry.EndLocation.City}&highPriority={inquiry.HightPriority}&dayOfWeek={(int)inquiry.DeliveryDate.DayOfWeek}"; 
+			string queryParams = $"start={inquiry.StartLocation.City}&end={inquiry.EndLocation.City}&highPriority={inquiry.HightPriority}&dayOfWeek={(int)inquiry.DeliveryDate.DayOfWeek}";
+
 			var response = await _client.GetAsync($"{_configuration.GetSection("DefaultURIs")["CouriersURI"]!}?{queryParams}");
+
 			if (response.IsSuccessStatusCode)
 			{
-				CourierDto? courier = await response.Content.ReadFromJsonAsync<CourierDto>();
-				return courier == null ? Result.Fail<CourierDto>("Resource not found") : Result.Ok(courier);
+				List<CourierDto>? couriers = await response.Content.ReadFromJsonAsync<List<CourierDto>>();
+
+				return couriers == null || couriers.Count == 0
+					? Result.Fail<List<CourierDto>>("Resource not found")
+					: Result.Ok(couriers);
 			}
-			return Result.Fail<CourierDto>("Failed to get response");
+
+			return Result.Fail<List<CourierDto>>("Failed to get response");
 		}
 
-    }
+	}
 }

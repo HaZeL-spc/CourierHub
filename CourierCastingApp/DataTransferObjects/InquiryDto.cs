@@ -18,7 +18,7 @@ public record InquiryDto(
 )
 {
 	// Your custom constructor
-	public InquiryDto(InquiryFormModel model) : this(
+	public InquiryDto(InquiryFormModel model, CourierDto courier = null) : this(
 	DimX: model.DimX,
 	DimY: model.DimY,
 	DimZ: model.DimZ,
@@ -28,11 +28,14 @@ public record InquiryDto(
 	StartLocation: new LocationDto(model.StartLocation),
 	EndLocation: new LocationDto(model.EndLocation),
 	HightPriority: model.HighPriority,
-	WeekendDelivery: model.WeekendDelivery,
 	Courier: new CourierDto(),
+	WeekendDelivery: model.WeekendDelivery,
 	Id: 2
 )
 	{
+		if (courier != null)
+            Courier = courier;
+
 		// Additional logic in the constructor if needed
 	}
 

@@ -19,14 +19,26 @@ namespace CourierAPI.Controllers
 			[FromQuery] string start,
 			[FromQuery] string end,
 			[FromQuery] string highPriority,
-			[FromQuery] string dayOfWeek, 
-			CancellationToken cancellationToken)
+			[FromQuery] string dayOfWeek)
 		{
-			var result = await _courierRepository.GetBestCourier(start, end, highPriority, dayOfWeek, cancellationToken);
-			if (result.Success)
-				return Ok(result.Value);
-			else
-				return NotFound();
+			var cancellationTokenSource = new CancellationTokenSource();
+			cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(30));
+			var cancellationToken = cancellationTokenSource.Token;
+
+			try
+			{
+				var result = await _courierRepository.GetBestCourier(start, end, highPriority, dayOfWeek, cancellationToken);
+				if (result.Success)
+					return Ok(result.Value);
+				else
+					return NotFound();
+			}
+			catch (OperationCanceledException)
+			{
+				// Handle the cancellation exception here
+				// For example, you might want to return a specific status code or message
+				return StatusCode(504, "Request timed out");
+			}
 		}
 	}
 }

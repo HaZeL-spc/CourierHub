@@ -6,7 +6,7 @@ namespace CourierCastingApp.Services
 {
     public interface ICourierRepository
     {
-        public Task<Result<CourierDto>> GetBestCourier(InquiryDto inquiry);
+        public Task<Result<List<CourierDto>>> GetBestCouriers(InquiryDto inquiry);
     }
 
     public class CourierRepository : ICourierRepository
@@ -18,9 +18,9 @@ namespace CourierCastingApp.Services
             _couriersClient = couriersClient;
         }
 
-        public Task<Result<CourierDto>> GetBestCourier(InquiryDto inquiry)
+        public Task<Result<List<CourierDto>>> GetBestCouriers(InquiryDto inquiry)
         {
-            return _couriersClient.GetBestCourier(inquiry);
+            return _couriersClient.GetBestCouriers(inquiry);
         }
     }
 

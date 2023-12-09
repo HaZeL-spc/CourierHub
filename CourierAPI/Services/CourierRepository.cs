@@ -9,7 +9,7 @@ namespace CourierAPI.Services
 {
 	public interface ICourierRepository
 	{
-		public Task<Result<CourierDTO>> GetBestCourier(string start, string end, string highPriority, string dayOfWeek, CancellationToken cancellationToken);
+		public Task<Result<List<CourierDTO>>> GetBestCourier(string start, string end, string highPriority, string dayOfWeek, CancellationToken cancellationToken);
 	}
 
 	public class CourierRepository : ICourierRepository
@@ -21,10 +21,12 @@ namespace CourierAPI.Services
 			_dbContext = dbContext;
 		}
 
-		public async Task<Result<CourierDTO>> GetBestCourier(string start, string end, string highPriority, string dayOfWeek, CancellationToken cancellationToken)
+		public async Task<Result<List<CourierDTO>>> GetBestCourier(string start, string end, string highPriority, string dayOfWeek, CancellationToken cancellationToken)
 		{
 			try
 			{
+				var couriers = new List<CourierDTO>();
+
 				bool highPriorityBool = bool.Parse(highPriority);
 				var courier = await _dbContext.Couriers
 					.Where(c =>
@@ -48,14 +50,15 @@ namespace CourierAPI.Services
 					})
 					.FirstOrDefaultAsync(cancellationToken);
 
+				couriers.Add(courier);
 
 				if (courier is null)
-					return Result.Fail<CourierDTO>("Delivery not found");
+					return Result.Fail<List<CourierDTO>>("Delivery not found");
 				else
-					return Result.Ok(courier);
+					return Result.Ok(couriers);
 			} catch (Exception e)
 			{
-				return Result.Fail<CourierDTO>("Failed to recieve data");
+				return Result.Fail<List<CourierDTO>>("Failed to recieve data");
 			}
 
 			throw new NotImplementedException();
