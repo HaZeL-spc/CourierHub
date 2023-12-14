@@ -15,7 +15,7 @@ namespace CourierAPI.Models
 		bool HightPriority,
 		bool WeekendDelivery,
 		int Id,
-        InquiryStatus Status = InquiryStatus.NotConsidered
+        InquiryStatus InquiryStatus = InquiryStatus.NotConsidered
         )
 	{
 		public InquiryDTO() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDTO(), new LocationDTO(), false, false, 0)

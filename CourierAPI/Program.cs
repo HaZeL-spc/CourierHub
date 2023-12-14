@@ -2,6 +2,7 @@ using CourierAPI.Helpers;
 using CourierAPI.Logic;
 using CourierAPI.Models;
 using CourierAPI.Services;
+using CourierAPI.Services.Converters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 builder.Services.AddScoped<IInquiriesLogic,  InquiriesLogic>();
+builder.Services.AddScoped<IInquiryModelToDtoConverter, InquiryModelToDtoConverter>();
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DeliverymanCastingDbContext>(o => 
 o.UseSqlServer(builder.Configuration.GetConnectionString("DeliverymanCastingDbConnection")));

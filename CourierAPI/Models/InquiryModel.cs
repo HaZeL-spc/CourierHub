@@ -16,9 +16,24 @@ namespace CourierAPI.Models
         public bool HightPriority { get; set; }
         public bool WeekendDelivery { get; set; }
         public int Id { get; set; }
-        public InquiryStatus Status { get; set; } = InquiryStatus.NotConsidered;
+        public InquiryStatus InquiryStatus { get; set; } = InquiryStatus.NotConsidered;
         
-        
+        public InquiryModel(InquiryDTO dto)
+        {
+            Id = dto.Id;
+            DimX = dto.DimX;
+            DimY = dto.DimY;
+            DimZ = dto.DimZ;
+            Weight = dto.Weight;
+            DeliveryDate = dto.DeliveryDate;
+            Name = dto.Name;
+            StartLocation = new LocationModel(dto.StartLocation);
+            EndLocation = new LocationModel(dto.EndLocation);
+            HightPriority = dto.HightPriority;
+            WeekendDelivery = dto.WeekendDelivery;
+            InquiryStatus = dto.InquiryStatus;
+        }
+
         public InquiryModel()
         {
 
@@ -26,7 +41,7 @@ namespace CourierAPI.Models
 
         public void SetAcceptedByOfficeWorker()
         {
-
+            InquiryStatus = InquiryStatus.Accepted;
         }
     }
 }

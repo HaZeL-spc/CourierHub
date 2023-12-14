@@ -16,7 +16,7 @@ public record InquiryDto(
 	bool HightPriority,
 	bool WeekendDelivery,
 	int Id,
-    InquiryStatus Status = InquiryStatus.NotConsidered
+    InquiryStatus InquiryStatus = InquiryStatus.NotConsidered
 )
 {
 	// Your custom constructor
@@ -31,7 +31,8 @@ public record InquiryDto(
 	EndLocation: new LocationDto(model.EndLocation),
 	HightPriority: model.HighPriority,
 	WeekendDelivery: model.WeekendDelivery,
-	Id: 2
+    InquiryStatus: InquiryStatus.NotConsidered,
+    Id: 2
 )
 	{
 		// Additional logic in the constructor if needed

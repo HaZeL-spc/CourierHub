@@ -44,9 +44,16 @@ namespace CourierAPI.Controllers
 
         [HttpPost]
         [Route("AcceptInquiry")]
-        public async Task<Result> AcceptInquiry([FromBody] InquiryDTO inquiry, CancellationToken cancellationToken)
+        public async Task<IActionResult> AcceptInquiry([FromBody] InquiryDTO inquiry, CancellationToken cancellationToken)
         {
-            return await _logic.AcceptInquiry(inquiry, cancellationToken);
+            var logicResponse = await _logic.AcceptInquiry(inquiry, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
         }
     }
 }

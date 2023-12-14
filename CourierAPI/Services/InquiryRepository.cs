@@ -11,7 +11,7 @@ public interface IInquiryRepository
 	public Task<Result<IEnumerable<InquiryDTO>>> GetAllInquiries(CancellationToken cancellationToken);
 	public Task<Result<InquiryDTO>> GetById(int inquiryId, CancellationToken cancellationToken);
 	public Task<Result> AddInquiry(InquiryDTO inquiry);
-	//public Task<Result> UpdateDelivery(DeliveryDto employee);
+	public Task<Result> Update(InquiryDTO inquiry);
 	//public Task<Result> DeleteDelivery(int deliveryId);
 }
 public class InquiryRepository : IInquiryRepository
@@ -45,14 +45,14 @@ public class InquiryRepository : IInquiryRepository
 					x.Weight, x.DeliveryDate,
 					x.Name, new LocationDTO(x.StartLocation!),
 					new LocationDTO(x.EndLocation!),
-					x.HightPriority, x.WeekendDelivery, x.Id))
+					x.HightPriority, x.WeekendDelivery, x.Id, x.InquiryStatus))
 				.ToListAsync(cancellationToken);
 
 			return Result.Ok<IEnumerable<InquiryDTO>>(inquiries);
 		}
-		catch
+		catch (Exception ex)
 		{
-			return Result.Fail<IEnumerable<InquiryDTO>>("Failed to recieve data");
+			return Result.Fail<IEnumerable<InquiryDTO>>($"Failed to recieve data: {ex.Message}");
 		}
 	}
 
@@ -95,8 +95,26 @@ public class InquiryRepository : IInquiryRepository
 		}
 	}
 
-	//public Task<Result> UpdateDelivery(DeliveryDto employee)
-	//{
-	//    throw new NotImplementedException();
-	//}
+	public async Task<Result> Update(InquiryDTO inquiry)
+    {
+        try
+        {
+            var existingInquiry = await _dbContext.Inquiries
+                .FirstOrDefaultAsync(x => x.Id == inquiry.Id);
+
+            if (existingInquiry == null)
+                return Result.Fail("Inquiry not found.");
+
+			Inquiry data = new Inquiry(inquiry);
+
+            _dbContext.Inquiries.Update(data);
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail($"Error while trying to update inquiry in the database: {ex}");
+        }
+    }
 }

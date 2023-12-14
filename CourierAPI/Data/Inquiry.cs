@@ -17,6 +17,7 @@ namespace CourierAPI.Data;
             EndLocation = new Location(inquiryDTO.EndLocation);
             HightPriority = inquiryDTO.HightPriority;
             WeekendDelivery = inquiryDTO.WeekendDelivery;
+			InquiryStatus = inquiryDTO.InquiryStatus;
 	}
 
 	public Inquiry(double dimX, double dimY, double dimZ, double weight, DateTime deliveryDate, string name, Location? startLocation, Location? endLocation, bool hightPriority, bool weekendDelivery)
@@ -59,7 +60,7 @@ namespace CourierAPI.Data;
         public bool HightPriority { get; init; }
         public bool WeekendDelivery { get; init; }
         public int Id { get; init; }
-        public InquiryStatus Status { get; init; } = InquiryStatus.NotConsidered;
+        public InquiryStatus InquiryStatus { get; init; } = InquiryStatus.NotConsidered;
     }
 
     

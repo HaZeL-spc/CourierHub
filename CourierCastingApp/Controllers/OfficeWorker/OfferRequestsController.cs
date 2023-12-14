@@ -91,7 +91,7 @@ namespace CourierCastingApp.Controllers.OfficeWorker
                     Street = i.StartLocation.Street,
                     StreetNumber = i.StartLocation.StreetNumber
                 },
-                i.HightPriority, i.WeekendDelivery, i.Id
+                i.HightPriority, i.WeekendDelivery, i.Id, i.InquiryStatus
                 );
 
             var logicResult = await _inquiryRepository.AcceptInquiry(inquiry);

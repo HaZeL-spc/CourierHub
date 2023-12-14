@@ -1,6 +1,5 @@
 ﻿namespace CourierAPI.Models
 {
-    using CourierAPI.Data;
     using global::CourierAPI.Data;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
