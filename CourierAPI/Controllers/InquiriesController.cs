@@ -20,21 +20,21 @@ namespace CourierAPI.Controllers
         {
             var result = await _inquiryRepository.GetAllInquiries(cancellationToken);
             if (result.Success)
-                return Ok(result.Value );
+                return Ok(result.Value);
             else
                 return NotFound();
         }
 
 		[HttpPost]
-		public async Task<IActionResult> CreateInquiry([FromBody] InquiryDTO inquiryDto)
+		public async Task<ActionResult<string>> CreateInquiry([FromBody] InquiryDTO inquiryDto)
 		{
             var result = await _inquiryRepository.AddInquiry(inquiryDto);
             if (result.Success)
             {
-                return Ok("Inquiry added successfully.");
+                return Ok(result);
 			}
 
-            return Ok("Failed to add inquiry");
-		}
+            return NotFound();
+        }
 	}
 }

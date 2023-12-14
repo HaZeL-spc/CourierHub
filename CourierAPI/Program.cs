@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
+builder.Services.AddScoped<ICourierRepository, CourierRepository>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DeliverymanCastingDbContext>(o => 
 o.UseSqlServer(builder.Configuration.GetConnectionString("DeliverymanCastingDbConnection")));

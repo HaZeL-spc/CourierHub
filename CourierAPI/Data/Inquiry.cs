@@ -17,6 +17,7 @@ namespace CourierAPI.Data
             StartLocation = new Location(inquiryDTO.StartLocation);
             EndLocation = new Location(inquiryDTO.EndLocation);
             HightPriority = inquiryDTO.HightPriority;
+            Courier = new Courier(inquiryDTO.Courier);
             WeekendDelivery = inquiryDTO.WeekendDelivery;
 		}
 
@@ -55,10 +56,11 @@ namespace CourierAPI.Data
         public double Weight { get; init; }
         public DateTime DeliveryDate { get; init; }
         public string Name { get; init; } = "";
-        public virtual Location? StartLocation { get; init; } = new();
-        public virtual Location? EndLocation { get; init; } = new();
+        public virtual Location? StartLocation { get; init; }
+        public virtual Location? EndLocation { get; init; }
         public bool HightPriority { get; init; }
         public bool WeekendDelivery { get; init; }
+        public virtual Courier? Courier { get; set; }
         public int Id { get; init; }
     }
 
