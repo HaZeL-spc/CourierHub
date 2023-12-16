@@ -1,0 +1,103 @@
+﻿@model InquiryVm
+
+<!-- Modal -->
+<div class="modal fade" id="detailsInquiry-@Model.Id" tabindex="-1" role="dialog" aria-labelledby="inquiryDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detale oferty</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.Name)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.Name
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.StartLocation)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @await Html.PartialAsync("_LocationPartial", Model.StartLocation)
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.EndLocation)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @await Html.PartialAsync("_LocationPartial", Model.EndLocation)
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.DimX)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.DimX
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.DimY)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.DimY
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.DimZ)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.DimZ
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.Weight)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.Weight
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.DeliveryDate)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.DeliveryDate
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.HightPriority)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.HightPriorityDisplay()
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.WeekendDelivery)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.WeekendDeliveryDisplay()
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
