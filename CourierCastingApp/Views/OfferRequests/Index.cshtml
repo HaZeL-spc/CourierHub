@@ -36,11 +36,11 @@
                     url: '@Url.Action("AcceptInquiry", "OfferRequests")', // Generate the URL for the AcceptInquiry action
                     method: 'POST', // Change method if needed (POST/GET)
                     data: inquiryModel,
-                    dataType: 'json',
+                    dataType: 'text',
                     success: function (response) {
                         // Handle success response
-                        console.log('Inquiry accepted:', response);
                         // You can add further actions here after successful acceptance
+                        window.location.reload();
                     },
                     error: function (error) {
                         // Handle error response

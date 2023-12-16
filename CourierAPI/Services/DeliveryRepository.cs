@@ -10,6 +10,7 @@ public interface IDeliveryRepository
     public Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries(CancellationToken cancellationToken);
     public Task<Result<DeliveryDto>> GetDelivery(int deliveryId, CancellationToken cancellationToken);
     public Task<Result> AddDelivery(DeliveryDto employee);
+    public Task<Result> AddDelivery(InquiryDTO inquiry);
     public Task<Result> UpdateDelivery(DeliveryDto employee);
     public Task<Result> DeleteDelivery(int deliveryId);
 }
@@ -25,6 +26,21 @@ public class DeliveryRepository : IDeliveryRepository
     public Task<Result> AddDelivery(DeliveryDto employee)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Result> AddDelivery(InquiryDTO inquiry)
+    {
+        try
+        {
+            _dbContext.Deliveries.Add(new Delivery(inquiry));
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Ok();
+        }
+        catch (Exception ex) 
+        {
+            return Result.Fail($"Failed to recieve data: {ex.Message}");
+        }
     }
 
     public Task<Result> DeleteDelivery(int deliveryId)

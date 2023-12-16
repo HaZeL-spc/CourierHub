@@ -4,6 +4,7 @@ using CourierAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourierAPI.Migrations
 {
     [DbContext(typeof(DeliverymanCastingDbContext))]
-    partial class DeliverymanCastingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209164315_repaired-foreign-key-virtual")]
+    partial class repairedforeignkeyvirtual
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,9 +143,6 @@ namespace CourierAPI.Migrations
 
                     b.Property<bool>("HightPriority")
                         .HasColumnType("bit");
-
-                    b.Property<int>("InquiryStatus")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

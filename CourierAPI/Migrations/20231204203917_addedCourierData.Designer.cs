@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourierAPI.Migrations
 {
     [DbContext(typeof(DeliverymanCastingDbContext))]
-    [Migration("20231120193001_vddfd")]
-    partial class vddfd
+    [Migration("20231204203917_addedCourierData")]
+    partial class addedCourierData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,44 @@ namespace CourierAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("CourierAPI.Data.Courier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Cena")
+                        .HasColumnType("float");
+
+                    b.Property<double>("CenaHighPriority")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("CzyWeekend")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("EndId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxPackages")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Workload")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EndId");
+
+                    b.HasIndex("StartId");
+
+                    b.ToTable("Couriers");
                 });
 
             modelBuilder.Entity("CourierAPI.Data.Delivery", b =>
@@ -87,6 +125,9 @@ namespace CourierAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CourierId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
@@ -119,6 +160,8 @@ namespace CourierAPI.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourierId");
 
                     b.HasIndex("EndLocationId");
 
@@ -160,6 +203,21 @@ namespace CourierAPI.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("CourierAPI.Data.Courier", b =>
+                {
+                    b.HasOne("CourierAPI.Data.Location", "End")
+                        .WithMany()
+                        .HasForeignKey("EndId");
+
+                    b.HasOne("CourierAPI.Data.Location", "Start")
+                        .WithMany()
+                        .HasForeignKey("StartId");
+
+                    b.Navigation("End");
+
+                    b.Navigation("Start");
+                });
+
             modelBuilder.Entity("CourierAPI.Data.Delivery", b =>
                 {
                     b.HasOne("CourierAPI.Data.Client", "Client")
@@ -189,6 +247,10 @@ namespace CourierAPI.Migrations
 
             modelBuilder.Entity("CourierAPI.Data.Inquiry", b =>
                 {
+                    b.HasOne("CourierAPI.Data.Courier", "Courier")
+                        .WithMany()
+                        .HasForeignKey("CourierId");
+
                     b.HasOne("CourierAPI.Data.Location", "EndLocation")
                         .WithMany()
                         .HasForeignKey("EndLocationId")
@@ -198,6 +260,8 @@ namespace CourierAPI.Migrations
                         .WithMany()
                         .HasForeignKey("StartLocationId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Courier");
 
                     b.Navigation("EndLocation");
 

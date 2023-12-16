@@ -27,37 +27,10 @@ namespace CourierCastingApp.Controllers.OfficeWorker
 
         public async Task<IActionResult> Index()
         {
-            //ICollection<InquiryVm> viewModel = new List<InquiryVm>()
-            //{
-            //    new InquiryVm
-            //    {
-            //        DimX = 1, DimY = 3, DimZ = 3,
-            //        Weight = 5,
-            //        DeliveryDate = new(),
-            //        StartLocation = new LocationVm(),
-            //        EndLocation = new LocationVm(),
-            //        HightPriority = false,
-            //        WeekendDelivery = true,
-            //        Name = "Kasztan",
-            //        Id = 55
-            //    },
-            //    new InquiryVm
-            //    {
-            //        DimX = 11, DimY = 32, DimZ = 32,
-            //        Weight = 53,
-            //        DeliveryDate = new(),
-            //        StartLocation = new LocationVm(),
-            //        EndLocation = new LocationVm(),
-            //        HightPriority = false,
-            //        WeekendDelivery = false,
-            //        Name = "Chiny i badziew",
-            //        Id = 553
-            //    }
-            //};
 
             var resultInquiries = await _inquiryRepository.GetAllInquiries();
             var resultDeliveries = await _deliveryRepository.GetAllDeliveries();
-            if (resultDeliveries.Success && resultDeliveries.Success)
+            if (resultDeliveries.Success && resultInquiries.Success)
             {
                 ICollection<DeliveryVm> deliveries = resultDeliveries.Value.Select(d => new DeliveryVm(d)).ToList();
                 ICollection<InquiryVm> inquiries = resultInquiries.Value.Select(i => new InquiryVm(i)).ToList();
@@ -91,14 +64,25 @@ namespace CourierCastingApp.Controllers.OfficeWorker
                     Street = i.StartLocation.Street,
                     StreetNumber = i.StartLocation.StreetNumber
                 },
-                i.HightPriority, i.WeekendDelivery, i.Id, i.InquiryStatus
+                i.HightPriority, i.WeekendDelivery, new CourierDto(), i.Id, i.InquiryStatus
                 );
 
             var logicResult = await _inquiryRepository.AcceptInquiry(inquiry);
 
             if (logicResult.Success)
             {
-                return RedirectToAction("Index");
+                var resultInquiries = await _inquiryRepository.GetAllInquiries();
+                var resultDeliveries = await _deliveryRepository.GetAllDeliveries();
+                if (resultDeliveries.Success && resultInquiries.Success)
+                {
+                    ICollection<DeliveryVm> deliveries = resultDeliveries.Value.Select(d => new DeliveryVm(d)).ToList();
+                    ICollection<InquiryVm> inquiries = resultInquiries.Value.Select(i => new InquiryVm(i)).ToList();
+
+                    return View("Index", (inquiries, deliveries));
+                }
+
+                else
+                    return NotFound();
             }
             else
                 return StatusCode(500, $"Internal Server Error: {logicResult.Error}");

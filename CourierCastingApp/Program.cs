@@ -1,3 +1,4 @@
+using Auth0.AspNetCore.Authentication;
 using CourierCastingApp.Filters;
 using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
@@ -11,6 +12,11 @@ builder.Services.AddScoped<ICourierCastingAppRepository, CourierCastingAppReposi
 builder.Services.AddDbContext<CourierCastingAppDbContext>(o =>
 o.UseSqlServer(builder.Configuration.GetConnectionString("CourierCastingAppConnection")));
 builder.Services.AddSession();
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+    options.Domain = builder.Configuration["Auth0:Domain"]!;
+    options.ClientId = builder.Configuration["Auth0:ClientId"]!;
+});
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add(typeof(UpdateCacheFilter), order: 1);
@@ -32,7 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

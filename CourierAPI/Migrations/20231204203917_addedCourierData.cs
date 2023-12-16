@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CourierAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class vddfd : Migration
+    public partial class addedCourierData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,35 @@ namespace CourierAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Couriers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartId = table.Column<int>(type: "int", nullable: true),
+                    EndId = table.Column<int>(type: "int", nullable: true),
+                    Cena = table.Column<double>(type: "float", nullable: false),
+                    CenaHighPriority = table.Column<double>(type: "float", nullable: false),
+                    CzyWeekend = table.Column<bool>(type: "bit", nullable: false),
+                    Workload = table.Column<int>(type: "int", nullable: false),
+                    MaxPackages = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Couriers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Couriers_Locations_EndId",
+                        column: x => x.EndId,
+                        principalTable: "Locations",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Couriers_Locations_StartId",
+                        column: x => x.StartId,
+                        principalTable: "Locations",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -92,11 +121,17 @@ namespace CourierAPI.Migrations
                     StartLocationId = table.Column<int>(type: "int", nullable: true),
                     EndLocationId = table.Column<int>(type: "int", nullable: true),
                     HightPriority = table.Column<bool>(type: "bit", nullable: false),
-                    WeekendDelivery = table.Column<bool>(type: "bit", nullable: false)
+                    WeekendDelivery = table.Column<bool>(type: "bit", nullable: false),
+                    CourierId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Inquiries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Inquiries_Couriers_CourierId",
+                        column: x => x.CourierId,
+                        principalTable: "Couriers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Inquiries_Locations_EndLocationId",
                         column: x => x.EndLocationId,
@@ -108,6 +143,16 @@ namespace CourierAPI.Migrations
                         principalTable: "Locations",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Couriers_EndId",
+                table: "Couriers",
+                column: "EndId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Couriers_StartId",
+                table: "Couriers",
+                column: "StartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_ClientId",
@@ -123,6 +168,11 @@ namespace CourierAPI.Migrations
                 name: "IX_Deliveries_StartLocationId",
                 table: "Deliveries",
                 column: "StartLocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Inquiries_CourierId",
+                table: "Inquiries",
+                column: "CourierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inquiries_EndLocationId",
@@ -146,6 +196,9 @@ namespace CourierAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Clients");
+
+            migrationBuilder.DropTable(
+                name: "Couriers");
 
             migrationBuilder.DropTable(
                 name: "Locations");

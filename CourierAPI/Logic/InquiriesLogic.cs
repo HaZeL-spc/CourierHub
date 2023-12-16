@@ -14,10 +14,12 @@ namespace CourierAPI.Logic
     public class InquiriesLogic : IInquiriesLogic
     {
         private readonly IInquiryRepository _inquiryRepository;
+        private readonly IDeliveryRepository _deliveryRepository;
         private readonly IInquiryModelToDtoConverter _MtoDtoConverter;
 
-        public InquiriesLogic(IInquiryRepository inquiryRepository, IInquiryModelToDtoConverter MtoDtoConverter)
+        public InquiriesLogic(IInquiryRepository inquiryRepository, IDeliveryRepository deliveryRepository, IInquiryModelToDtoConverter MtoDtoConverter)
         {
+            _deliveryRepository = deliveryRepository;
             _inquiryRepository = inquiryRepository;
             _MtoDtoConverter = MtoDtoConverter;
         }
@@ -25,22 +27,21 @@ namespace CourierAPI.Logic
         public async Task<Result> AcceptInquiry(InquiryDTO inquiry, CancellationToken cancellationToken)
         {
             var getResponse = await _inquiryRepository.GetById(inquiry.Id, cancellationToken);
-            if (getResponse.Success)
-            {
-                InquiryModel model = new InquiryModel(inquiry);
+
+            if (!getResponse.Success) return Result.Fail($"Repository error: {getResponse.Error}");
+            
+            InquiryModel model = new InquiryModel(inquiry);    
+            model.SetAcceptedByOfficeWorker();
+            inquiry = _MtoDtoConverter.Convert(model);
+            var updateResponse = await _inquiryRepository.Update(inquiry);
+
+            var createResponse = await _deliveryRepository.AddDelivery(inquiry);
+
+            return updateResponse.Success 
+                ? Result.Ok() 
+                : Result.Fail(updateResponse.Error);
+            
                 
-                model.SetAcceptedByOfficeWorker();
-
-                inquiry = _MtoDtoConverter.Convert(model);
-
-                var updateResponse = await _inquiryRepository.Update(inquiry);
-
-                return updateResponse.Success 
-                    ? Result.Ok() 
-                    : Result.Fail(updateResponse.Error);
-            }
-            else
-                return Result.Fail($"Repository error: {getResponse.Error}");
         }
     }
 }

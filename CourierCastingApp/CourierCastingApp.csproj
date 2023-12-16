@@ -11,18 +11,22 @@
 
   <ItemGroup>
     <Compile Remove="Views\DeliverymanPanel\**" />
+    <Compile Remove="Views\NewFolder\**" />
     <Compile Remove="Views\OrderActive\**" />
     <Compile Remove="Views\Shared\NavigationBars\**" />
     <Compile Remove="Views\Shared\Nowy folder\**" />
     <Content Remove="Views\DeliverymanPanel\**" />
+    <Content Remove="Views\NewFolder\**" />
     <Content Remove="Views\OrderActive\**" />
     <Content Remove="Views\Shared\NavigationBars\**" />
     <Content Remove="Views\Shared\Nowy folder\**" />
     <EmbeddedResource Remove="Views\DeliverymanPanel\**" />
+    <EmbeddedResource Remove="Views\NewFolder\**" />
     <EmbeddedResource Remove="Views\OrderActive\**" />
     <EmbeddedResource Remove="Views\Shared\NavigationBars\**" />
     <EmbeddedResource Remove="Views\Shared\Nowy folder\**" />
     <None Remove="Views\DeliverymanPanel\**" />
+    <None Remove="Views\NewFolder\**" />
     <None Remove="Views\OrderActive\**" />
     <None Remove="Views\Shared\NavigationBars\**" />
     <None Remove="Views\Shared\Nowy folder\**" />
@@ -34,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
