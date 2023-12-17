@@ -13,8 +13,9 @@ namespace CourierCastingApp.Clients
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
         public Task<Result> AcceptInquiry(InquiryDto inquiry);
 		public Task<Result<string>> CreateInquiry(InquiryDto newInquiry);
-		//public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
-	}
+        public Task<Result> RejectInquiry(InquiryDto inquiry);
+        //public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
+    }
 
     public class InquiriesClient : IInquiriesClient
     {
@@ -82,6 +83,27 @@ namespace CourierCastingApp.Clients
                     : Result.Fail($"Failed to accept inquiry. Status code: {response.StatusCode}");
             }
             catch (Exception ex) 
+            {
+                return Result.Fail($"Error: {ex.Message}");
+            }
+        }
+
+        public async Task<Result> RejectInquiry(InquiryDto inquiry)
+        {
+            try
+            {
+                var uri = _configuration.GetSection("DefaultURIs")["RejectInquiryURI"];
+
+                var jsonInquiry = JsonConvert.SerializeObject(inquiry);
+                var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync(uri, content);
+
+                return response.IsSuccessStatusCode
+                    ? Result.Ok()
+                    : Result.Fail($"Failed to reject inquiry. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
             {
                 return Result.Fail($"Error: {ex.Message}");
             }

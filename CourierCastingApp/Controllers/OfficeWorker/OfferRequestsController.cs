@@ -71,18 +71,42 @@ namespace CourierCastingApp.Controllers.OfficeWorker
 
             if (logicResult.Success)
             {
-                var resultInquiries = await _inquiryRepository.GetAllInquiries();
-                var resultDeliveries = await _deliveryRepository.GetAllDeliveries();
-                if (resultDeliveries.Success && resultInquiries.Success)
+                return RedirectToAction("Index", "OfferRequests");
+            }
+            else
+                return StatusCode(500, $"Internal Server Error: {logicResult.Error}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RejectInquiry([FromBody] InquiryVm i)
+        {
+            // make converter? i cannot use constructor cause vm and dto can depend on each other both ways
+
+            InquiryDto inquiry = new InquiryDto(i.DimX, i.DimY, i.DimZ, i.Weight, i.DeliveryDate, i.Name,
+                new LocationDto
                 {
-                    ICollection<DeliveryVm> deliveries = resultDeliveries.Value.Select(d => new DeliveryVm(d)).ToList();
-                    ICollection<InquiryVm> inquiries = resultInquiries.Value.Select(i => new InquiryVm(i)).ToList();
+                    City = i.EndLocation.City,
+                    Country = i.EndLocation.Country,
+                    PostCode = i.EndLocation.PostCode,
+                    Street = i.EndLocation.Street,
+                    StreetNumber = i.EndLocation.StreetNumber
+                },
+                new LocationDto
+                {
+                    City = i.StartLocation.City,
+                    Country = i.StartLocation.Country,
+                    PostCode = i.StartLocation.PostCode,
+                    Street = i.StartLocation.Street,
+                    StreetNumber = i.StartLocation.StreetNumber
+                },
+                i.HightPriority, i.WeekendDelivery, new CourierDto(), i.Id, i.InquiryStatus
+                );
 
-                    return View("Index", (inquiries, deliveries));
-                }
+            var logicResult = await _inquiryRepository.RejectInquiry(inquiry);
 
-                else
-                    return NotFound();
+            if (logicResult.Success)
+            {
+                return RedirectToAction("Index", "OfferRequests");
             }
             else
                 return StatusCode(500, $"Internal Server Error: {logicResult.Error}");

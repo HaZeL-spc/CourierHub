@@ -54,5 +54,19 @@ namespace CourierAPI.Controllers
 
             return StatusCode(500);
         }
+
+        [HttpPost]
+        [Route("RejectInquiry")]
+        public async Task<IActionResult> RejectInquiry([FromBody] InquiryDTO inquiry, CancellationToken cancellationToken)
+        {
+            var logicResponse = await _logic.RejectInquiry(inquiry, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
     }
 }

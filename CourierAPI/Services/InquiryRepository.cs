@@ -12,7 +12,8 @@ public interface IInquiryRepository
 	public Task<Result<InquiryDTO>> GetById(int inquiryId, CancellationToken cancellationToken);
 	public Task<Result> AddInquiry(InquiryDTO inquiry);
 	public Task<Result> Update(InquiryDTO inquiry);
-	//public Task<Result> DeleteDelivery(int deliveryId);
+    public Task<Result> DeleteById(int id, CancellationToken cancellationToken);
+    //public Task<Result> DeleteDelivery(int deliveryId);
 }
 public class InquiryRepository : IInquiryRepository
 {
@@ -161,6 +162,30 @@ public class InquiryRepository : IInquiryRepository
         catch (Exception ex)
         {
             return Result.Fail($"Error while trying to update inquiry in the database: {ex}");
+        }
+    }
+
+    public async Task<Result> DeleteById(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var existingInquiry = await _dbContext.Inquiries
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingInquiry == null)
+            {
+                return Result.Fail($"Inquiry with id {id} not found.");
+            }
+
+            _dbContext.Inquiries.Remove(existingInquiry);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail($"An error occurred while deleting the inquiry: {ex.Message}");
         }
     }
 }

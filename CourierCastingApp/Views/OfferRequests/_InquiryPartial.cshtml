@@ -9,8 +9,12 @@
         </button>
         @await Html.PartialAsync("_DetailsInquiryPartial", Model)
 
-        <button type="submit" class="btn btn-primary accept-btn" data-model="@Model.Data()">
+        <button type="button" class="btn btn-primary accept-btn" data-model="@Model.Data()">
             Accept
+        </button>
+
+        <button type="button" class="btn btn-primary reject-btn" data-model="@Model.Data()">
+            Reject
         </button>
     </td>
 </tr>

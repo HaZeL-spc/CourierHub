@@ -39,6 +39,11 @@ namespace CourierAPI.Models
 
         }
 
+        public void SetRejectedByOfficeWorker()
+        {
+            InquiryStatus = InquiryStatus.Rejected;
+        }
+
         public void SetAcceptedByOfficeWorker()
         {
             InquiryStatus = InquiryStatus.Accepted;

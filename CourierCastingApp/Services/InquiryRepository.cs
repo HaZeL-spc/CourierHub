@@ -11,6 +11,7 @@ namespace CourierCastingApp.Services
         //public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
         public Task<Result> CreateInquiry(InquiryDto inquiry);
         public Task<Result> AcceptInquiry(InquiryDto inquiry);
+        public Task<Result> RejectInquiry(InquiryDto inquiry);
         //public Task<Result> UpdateDelivery(DeliveryDto employee);
         //public Task<Result> DeleteDelivery(int deliveryId);
     }
@@ -38,6 +39,11 @@ namespace CourierCastingApp.Services
         public async Task<Result> AcceptInquiry(InquiryDto inquiry)
         {
             return await _inquiriesClient.AcceptInquiry(inquiry);
+        }
+
+        public async Task<Result> RejectInquiry(InquiryDto inquiry)
+        {
+            return await _inquiriesClient.RejectInquiry(inquiry);
         }
     }
 }
