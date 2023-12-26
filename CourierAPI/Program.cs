@@ -13,6 +13,8 @@ builder.Services.AddScoped<IInquiryRepository, InquiryRepository>();
 builder.Services.AddScoped<IInquiriesLogic,  InquiriesLogic>();
 builder.Services.AddScoped<IInquiryModelToDtoConverter, InquiryModelToDtoConverter>();
 builder.Services.AddScoped<ICourierRepository, CourierRepository>();
+builder.Services.AddScoped<IDeliveriesLogic, DeliveriesLogic>();
+builder.Services.AddScoped<IDeliveryConverter, DeliveryConverter>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DeliverymanCastingDbContext>(o => 
 o.UseSqlServer(builder.Configuration.GetConnectionString("DeliverymanCastingDbConnection")));

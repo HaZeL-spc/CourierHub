@@ -70,5 +70,21 @@ namespace CourierCastingApp.ViewModels
         {
             return Status == DeliveryStatus.Cancelled || Status == DeliveryStatus.Delivered;
         }
+
+        public bool IsPickedUp()
+        {
+            return Status == DeliveryStatus.PickedUp;
+        }
+
+        public bool IsNotPickedUp()
+        {
+            return Status == DeliveryStatus.NotPickedUp;
+        }
+
+        public string Data()
+        {
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return data;
+        }
     }
 }

@@ -19,6 +19,17 @@ public record Delivery
         EndLocation = new Location(i.EndLocation);
     }
 
+    public Delivery(DeliveryDto d)
+    {
+        Id = d.Id;
+        Status = d.Status; Name = d.Name; ClientId = d.ClientId;
+        Client = new Client(); // tmp
+        ClientId = d.ClientId; // tmp
+        StartLocationId = d.StartLocation.Id;
+        StartLocation = new Location(d.StartLocation);
+        EndLocation = new Location(d.EndLocation);
+    }
+
     public Delivery() { Name = ""; Client = new Client(); }
 
     public int Id { get; set; }

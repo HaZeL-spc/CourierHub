@@ -1,4 +1,6 @@
-﻿using CourierAPI.Services;
+﻿using CourierAPI.Logic;
+using CourierAPI.Models;
+using CourierAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourierAPI.Controllers
@@ -8,8 +10,11 @@ namespace CourierAPI.Controllers
     public class DeliveriesController : ControllerBase
     {
         private readonly IDeliveryRepository _deliveryRepository;
-        public DeliveriesController(IDeliveryRepository deliveryRepository)
+        private readonly IDeliveriesLogic _logic;
+        public DeliveriesController(IDeliveryRepository deliveryRepository, 
+            IDeliveriesLogic logic)
         {
+            _logic = logic;
             _deliveryRepository = deliveryRepository;
         }
          
@@ -23,5 +28,46 @@ namespace CourierAPI.Controllers
                 return NotFound();
         }
 
+        [HttpPost]
+        [Route("PickUpDelivery")]
+        public async Task<IActionResult> PickUpDelivery([FromBody] DeliveryDto d, CancellationToken cancellationToken)
+        {
+            var logicResponse = await _logic.PickUpDelivery(d, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+
+        [HttpPost]
+        [Route("DeliverDelivery")]
+        public async Task<IActionResult> DeliverDelivery([FromBody] DeliveryDto d, CancellationToken cancellationToken)
+        {
+            var logicResponse = await _logic.DeliverDelivery(d, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+
+        [HttpPost]
+        [Route("CancelDelivery")]
+        public async Task<IActionResult> CancelDelivery([FromBody] DeliveryDto d, CancellationToken cancellationToken)
+        {
+            var logicResponse = await _logic.CancelDelivery(d, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
     }
 }

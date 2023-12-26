@@ -12,6 +12,9 @@ namespace CourierCastingApp.Services
         public Task<Result> AddDelivery(DeliveryDto employee);
         public Task<Result> UpdateDelivery(DeliveryDto employee);
         public Task<Result> DeleteDelivery(int deliveryId);
+        public Task<Result> PickUpDelivery(DeliveryDto delivery);
+        public Task<Result> DeliverDelivery(DeliveryDto ddto);
+        public Task<Result> CancelDelivery(DeliveryDto ddto);
     }
 
     public class DeliveryRepository : IDeliveryRepository
@@ -21,6 +24,16 @@ namespace CourierCastingApp.Services
         public DeliveryRepository(IDeliveriesClient deliveriesClient)
         {
             _deliveriesClient = deliveriesClient;
+        }
+
+        public async Task<Result> CancelDelivery(DeliveryDto ddto)
+        {
+            return await _deliveriesClient.CancelDelivery(ddto);
+        }
+
+        public async Task<Result> PickUpDelivery(DeliveryDto dto)
+        {
+            return await _deliveriesClient.PickUpDelivery(dto);
         }
 
         public Task<Result> AddDelivery(DeliveryDto employee)
@@ -46,6 +59,11 @@ namespace CourierCastingApp.Services
         public Task<Result> UpdateDelivery(DeliveryDto employee)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result> DeliverDelivery(DeliveryDto ddto)
+        {
+            return await _deliveriesClient.DeliverDelivery(ddto);
         }
     }
 }

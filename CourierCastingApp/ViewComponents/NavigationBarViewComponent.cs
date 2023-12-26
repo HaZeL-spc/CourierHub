@@ -39,7 +39,7 @@ namespace CourierCastingApp.ViewComponents
         public IViewComponentResult Invoke()
         {
             // We must provide there some kind of getting from database of status or just getting from model 
-            ClientStatus userRole = ClientStatus.OfficeWorker;
+            ClientStatus userRole = ClientStatus.Courier;
 
             return View(dictionaryNavBar[userRole]);
         }

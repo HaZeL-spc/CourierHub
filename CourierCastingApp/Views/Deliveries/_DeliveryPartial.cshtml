@@ -8,6 +8,25 @@
             Detale
         </button>
         @await Html.PartialAsync("_DetailsDeliveryPartial", Model)
+
+        @if (Model.IsNotPickedUp())
+        {
+            <button type="button" class="btn btn-primary pickup-btn" data-model="@Model.Data()">
+                Mark as picked up
+            </button>
+        }
+        @if (Model.IsPickedUp())
+        {
+            <button type="button" class="btn btn-primary delivered-btn" data-model="@Model.Data()">
+                Mark as delivered
+            </button>
+        }
+        @if (Model.IsInProgress())
+        {
+            <button type="button" class="btn btn-primary cancel-btn" data-model="@Model.Data()">
+                Cancel the delivery
+            </button>
+        }
     </td>
 </tr>
 
