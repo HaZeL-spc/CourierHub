@@ -1,0 +1,42 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  major: 0
+  minor: 1
+  date: $[format('{0:yyyyMM}', pipeline.startTime)]
+  revision: $[counter('revision', 1)]
+
+name: $(major).$(minor).$(date).$(revision)
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+      steps:
+      - task: Docker@2
+        displayName: Build CourierAPI image
+        inputs:
+          command: build
+          dockerfile: '$(Build.SourcesDirectory)/CourierAPI/Dockerfile'
+          tags: |
+            $(courierApiTag)
+      - task: Docker@2
+        displayName: Build CourierCastingApp image
+        inputs:
+          command: build
+          dockerfile: '$(Build.SourcesDirectory)/CourierCastingApp/Dockerfile'
+          tags: |
+            $(courierCastingAppTag)
