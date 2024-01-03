@@ -20,3 +20,59 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.accept-btn').click(function () {
+                var inquiryModel = JSON.stringify($(this).data('model'));
+
+                // Perform an AJAX call to the AcceptInquiry action
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: '@Url.Action("AcceptInquiry", "OfferRequests")', // Generate the URL for the AcceptInquiry action
+                    method: 'POST', // Change method if needed (POST/GET)
+                    data: inquiryModel,
+                    dataType: 'text',
+                    success: function (response) {
+                        // Handle success response
+                        // You can add further actions here after successful acceptance
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error('Error accepting inquiry:', error);
+                    }
+                });
+            });
+
+            $('.reject-btn').click(function () {
+                var inquiryModel = JSON.stringify($(this).data('model'));
+
+                // Perform an AJAX call to the AcceptInquiry action
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: '@Url.Action("RejectInquiry", "OfferRequests")', // Generate the URL for the AcceptInquiry action
+                    method: 'POST', // Change method if needed (POST/GET)
+                    data: inquiryModel,
+                    dataType: 'text',
+                    success: function (response) {
+                        // Handle success response
+                        // You can add further actions here after successful acceptance
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error('Error rejecting inquiry:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}

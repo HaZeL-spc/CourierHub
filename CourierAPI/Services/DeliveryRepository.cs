@@ -10,6 +10,7 @@ public interface IDeliveryRepository
     public Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries(CancellationToken cancellationToken);
     public Task<Result<DeliveryDto>> GetDelivery(int deliveryId, CancellationToken cancellationToken);
     public Task<Result> AddDelivery(DeliveryDto employee);
+    public Task<Result> AddDelivery(InquiryDTO inquiry);
     public Task<Result> UpdateDelivery(DeliveryDto employee);
     public Task<Result> DeleteDelivery(int deliveryId);
 }
@@ -25,6 +26,21 @@ public class DeliveryRepository : IDeliveryRepository
     public Task<Result> AddDelivery(DeliveryDto employee)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Result> AddDelivery(InquiryDTO inquiry)
+    {
+        try
+        {
+            _dbContext.Deliveries.Add(new Delivery(inquiry));
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Ok();
+        }
+        catch (Exception ex) 
+        {
+            return Result.Fail($"Failed to recieve data: {ex.Message}");
+        }
     }
 
     public Task<Result> DeleteDelivery(int deliveryId)
@@ -60,7 +76,7 @@ public class DeliveryRepository : IDeliveryRepository
                 .Include(x => x.Client)
                 .Where(x => x.Id == deliveryId)
                 .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationDTO(x.StartLocation), new LocationDTO(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
-                .FirstOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync();
             if (delivery is null)
                 return Result.Fail<DeliveryDto>("Delivery not found");
             else
@@ -72,8 +88,27 @@ public class DeliveryRepository : IDeliveryRepository
         }
     }
 
-    public Task<Result> UpdateDelivery(DeliveryDto employee)
+    public async Task<Result> UpdateDelivery(DeliveryDto dto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var existingDelivery = await _dbContext.Deliveries
+                .FirstOrDefaultAsync(x => x.Id == dto.Id);
+
+            if (existingDelivery == null)
+                return Result.Fail("Inquiry not found.");
+
+            var data = new Delivery(dto);
+
+            existingDelivery.Status = data.Status;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail($"Error while trying to update delivery in the database: {ex}");
+        }
     }
 }

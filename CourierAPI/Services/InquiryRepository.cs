@@ -9,10 +9,11 @@ namespace CourierAPI.Services;
 public interface IInquiryRepository
 {
 	public Task<Result<IEnumerable<InquiryDTO>>> GetAllInquiries(CancellationToken cancellationToken);
-	//public Task<Result<DeliveryDto>> GetDelivery(int deliveryId, CancellationToken cancellationToken);
+	public Task<Result<InquiryDTO>> GetById(int inquiryId, CancellationToken cancellationToken);
 	public Task<Result> AddInquiry(InquiryDTO inquiry);
-	//public Task<Result> UpdateDelivery(DeliveryDto employee);
-	//public Task<Result> DeleteDelivery(int deliveryId);
+	public Task<Result> Update(InquiryDTO inquiry);
+    public Task<Result> DeleteById(int id, CancellationToken cancellationToken);
+    //public Task<Result> DeleteDelivery(int deliveryId);
 }
 public class InquiryRepository : IInquiryRepository
 {
@@ -46,14 +47,14 @@ public class InquiryRepository : IInquiryRepository
 					x.Name, new LocationDTO(x.StartLocation),
 					new LocationDTO(x.EndLocation),
 					x.HightPriority, x.WeekendDelivery,
-					new CourierDTO(x.Courier), x.Id))
+					new CourierDTO(x.Courier), x.Id, x.InquiryStatus))
 				.ToListAsync(cancellationToken);
 
 			return Result.Ok<IEnumerable<InquiryDTO>>(inquiries);
 		}
-		catch
+		catch (Exception ex)
 		{
-			return Result.Fail<IEnumerable<InquiryDTO>>("Failed to recieve data");
+			return Result.Fail<IEnumerable<InquiryDTO>>($"Failed to recieve data: {ex.Message}");
 		}
 	}
 
@@ -118,30 +119,73 @@ public class InquiryRepository : IInquiryRepository
 		}
 	}
 
-	//public async Task<Result<DeliveryDto>> GetDelivery(int deliveryId, CancellationToken cancellationToken)
-	//{
-	//    try
-	//    {
-	//        var delivery = await _dbContext.Deliveries
-	//            .Include(x => x.EndLocation)
-	//            .Include(x => x.StartLocation)
-	//            .Include(x => x.Client)
-	//            .Where(x => x.Id == deliveryId)
-	//            .Select(x => new DeliveryDto(x.Id, x.Status, x.Name, new LocationDTO(x.StartLocation), new LocationDTO(x.EndLocation), x.PickedUpTime, x.FinishedDeliveryTime, x.Client.Id))
-	//            .FirstOrDefaultAsync(cancellationToken);
-	//        if (delivery is null)
-	//            return Result.Fail<DeliveryDto>("Delivery not found");
-	//        else
-	//            return Result.Ok(delivery);
-	//    }
-	//    catch
-	//    {
-	//        return Result.Fail<DeliveryDto>("Failed to recieve data");
-	//    }
-	//}
+	public async Task<Result<InquiryDTO>> GetById(int inquiryId, CancellationToken cancellationToken)
+	{
+		try
+		{
+			var inquiry = await _dbContext.Inquiries
+				.Include(x => x.StartLocation)
+				.Include(x => x.EndLocation)
+				.Where(x => x.Id == inquiryId)
+				.Select(x => new InquiryDTO(x))
+				.FirstOrDefaultAsync();
+			if (inquiry == null)
+				return Result.Fail<InquiryDTO>("Inquiry not found.");
+			else
+				return Result.Ok(inquiry);
 
-	//public Task<Result> UpdateDelivery(DeliveryDto employee)
-	//{
-	//    throw new NotImplementedException();
-	//}
+		}
+		catch
+		{
+			return Result.Fail<InquiryDTO>("Error while trying to get inquiry by id from database.");
+		}
+	}
+
+	public async Task<Result> Update(InquiryDTO inquiry)
+    {
+        try
+        {
+            var existingInquiry = await _dbContext.Inquiries
+                .FirstOrDefaultAsync(x => x.Id == inquiry.Id);
+
+            if (existingInquiry == null)
+                return Result.Fail("Inquiry not found.");
+
+			Inquiry data = new Inquiry(inquiry);
+
+			existingInquiry.InquiryStatus = data.InquiryStatus;
+
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail($"Error while trying to update inquiry in the database: {ex}");
+        }
+    }
+
+    public async Task<Result> DeleteById(int id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var existingInquiry = await _dbContext.Inquiries
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingInquiry == null)
+            {
+                return Result.Fail($"Inquiry with id {id} not found.");
+            }
+
+            _dbContext.Inquiries.Remove(existingInquiry);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return Result.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail($"An error occurred while deleting the inquiry: {ex.Message}");
+        }
+    }
 }

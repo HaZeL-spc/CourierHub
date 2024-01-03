@@ -32,5 +32,9 @@ namespace CourierCastingApp.DataTransferObjects
             EndLocation = endLocation;
         }
 
+        public DeliveryDto()
+        {
+
+        }
     }
 }

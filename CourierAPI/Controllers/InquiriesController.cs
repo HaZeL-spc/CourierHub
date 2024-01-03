@@ -1,4 +1,6 @@
-﻿using CourierAPI.Models;
+﻿using CourierAPI.Helpers;
+using CourierAPI.Logic;
+using CourierAPI.Models;
 using CourierAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,11 @@ namespace CourierAPI.Controllers
     public class InquiriesController : ControllerBase
     {
         private readonly IInquiryRepository _inquiryRepository;
-        public InquiriesController(IInquiryRepository inquiryRepository)
+        private readonly IInquiriesLogic _logic;
+        public InquiriesController(IInquiryRepository inquiryRepository, IInquiriesLogic inquiriesLogic)
         {
             _inquiryRepository = inquiryRepository;
+            _logic = inquiriesLogic;
         }
 
         [HttpGet]
@@ -34,7 +38,35 @@ namespace CourierAPI.Controllers
                 return Ok(result);
 			}
 
-            return NotFound();
+            return Ok("Failed to add inquiry");
+		}
+
+        [HttpPost]
+        [Route("AcceptInquiry")]
+        public async Task<IActionResult> AcceptInquiry([FromBody] InquiryDTO inquiry, CancellationToken cancellationToken)
+        {
+            var logicResponse = await _logic.AcceptInquiry(inquiry, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
         }
-	}
+
+        [HttpPost]
+        [Route("RejectInquiry")]
+        public async Task<IActionResult> RejectInquiry([FromBody] InquiryDTO inquiry, CancellationToken cancellationToken)
+        {
+            var logicResponse = await _logic.RejectInquiry(inquiry, cancellationToken);
+
+            if (logicResponse.Success)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+    }
 }

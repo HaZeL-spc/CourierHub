@@ -18,6 +18,8 @@ namespace CourierCastingApp.Helpers
 
 			builder.Services.AddScoped<ICourierRepository, CourierRepository>();
 
+			builder.Services.AddScoped<IDeliveryConverter, DeliveryConverter>();
+
 			var handler = new HttpClientHandler();
 			handler.ServerCertificateCustomValidationCallback =
 				(httpRequestMessage, cert, cetChain, policyErrors) =>
@@ -29,18 +31,18 @@ namespace CourierCastingApp.Helpers
 			builder.Services.AddHttpClient<IInquiriesClient, InquiriesClient>(client =>
 			{
 				client.BaseAddress = new Uri(builder.Configuration.GetSection("DefaultURIs")["BaseURI"]!);
-			}).ConfigurePrimaryHttpMessageHandler(() => handler)
-			.AddPolicyHandler(Policy
-				.Handle<TimeoutRejectedException>()
-				.OrTransientHttpError()
-				.WaitAndRetryAsync(new[]
-					{
-                        // number of retries and delay between them
-                        TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(500),
-						TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5),
-					}))
-			.AddPolicyHandler(Policy
-				.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(1))); // timeout for each request
+			}).ConfigurePrimaryHttpMessageHandler(() => handler);
+			//.AddPolicyHandler(Policy
+			//	.Handle<TimeoutRejectedException>()
+			//	.OrTransientHttpError()
+			//	.WaitAndRetryAsync(new[]
+			//		{
+   //                     // number of retries and delay between them
+   //                     TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(500),
+			//			TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5),
+			//		}))
+			//.AddPolicyHandler(Policy
+			//	.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(1))); // timeout for each request
 
 			builder.Services.AddHttpClient<IDeliveriesClient, DeliveriesClient>(client =>
 			{

@@ -1,17 +1,21 @@
-﻿using CourierCastingApp.DataTransferObjects;
+﻿using CourierCastingApp.Clients;
+using CourierCastingApp.DataTransferObjects;
 using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
 using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace CourierCastingApp.Clients
 {
     public interface IInquiriesClient
     {
         public Task<Result<IEnumerable<InquiryDto>>> GetAllInquiries();
+        public Task<Result> AcceptInquiry(InquiryDto inquiry);
 		public Task<Result<string>> CreateInquiry(InquiryDto newInquiry);
-		//public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
-	}
+        public Task<Result> RejectInquiry(InquiryDto inquiry);
+        //public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
+    }
 
     public class InquiriesClient : IInquiriesClient
     {
@@ -45,7 +49,7 @@ namespace CourierCastingApp.Clients
 				var myUrl = _configuration.GetSection("DefaultURIs")["InquiriesURI"];
 
 				// POST request
-				var response = await _client.PostAsync(_configuration.GetSection("DefaultURIs")["InquiriesURI"]!, content);
+				var response = await _client.PostAsync(_configuration.GetSection("DefaultURIs")["CreateInquiriesURI"]!, content);
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -61,5 +65,48 @@ namespace CourierCastingApp.Clients
 				return Result.Fail<string>($"Error: {ex.Message}");
 			}
 		}
-	}
+	
+
+        public async Task<Result> AcceptInquiry(InquiryDto inquiry)
+        {
+            try
+            {
+                var uri = _configuration.GetSection("DefaultURIs")["AcceptInquiryURI"];
+                
+                var jsonInquiry = JsonConvert.SerializeObject(inquiry);
+                var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync(uri, content);
+
+                return response.IsSuccessStatusCode
+                    ? Result.Ok()
+                    : Result.Fail($"Failed to accept inquiry. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex) 
+            {
+                return Result.Fail($"Error: {ex.Message}");
+            }
+        }
+
+        public async Task<Result> RejectInquiry(InquiryDto inquiry)
+        {
+            try
+            {
+                var uri = _configuration.GetSection("DefaultURIs")["RejectInquiryURI"];
+
+                var jsonInquiry = JsonConvert.SerializeObject(inquiry);
+                var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync(uri, content);
+
+                return response.IsSuccessStatusCode
+                    ? Result.Ok()
+                    : Result.Fail($"Failed to reject inquiry. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail($"Error: {ex.Message}");
+            }
+        }
+    }
 }

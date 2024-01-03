@@ -23,5 +23,84 @@
     </table>
 </div>
 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.pickup-btn').click(function () {
+                var deliveryModel = JSON.stringify($(this).data('model'));
 
+                // Perform an AJAX call to the AcceptInquiry action
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: '@Url.Action("PickUpDelivery", "Deliveries")', // Generate the URL for the AcceptInquiry action
+                    method: 'POST', // Change method if needed (POST/GET)
+                    data: deliveryModel,
+                    dataType: 'text',
+                    success: function (response) {
+                        // Handle success response
+                        // You can add further actions here after successful acceptance
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error('Error picking up delivery:', error);
+                    }
+                });
+            });
+
+            $('.delivered-btn').click(function () {
+                var deliveryModel = JSON.stringify($(this).data('model'));
+
+                // Perform an AJAX call to the AcceptInquiry action
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: '@Url.Action("DeliverDelivery", "Deliveries")', // Generate the URL for the AcceptInquiry action
+                    method: 'POST', // Change method if needed (POST/GET)
+                    data: deliveryModel,
+                    dataType: 'text',
+                    success: function (response) {
+                        // Handle success response
+                        // You can add further actions here after successful acceptance
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error('Error picking up delivery:', error);
+                    }
+                });
+            });
+
+            $('.cancel-btn').click(function () {
+                var deliveryModel = JSON.stringify($(this).data('model'));
+
+                // Perform an AJAX call to the AcceptInquiry action
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: '@Url.Action("CancelDelivery", "Deliveries")', // Generate the URL for the AcceptInquiry action
+                    method: 'POST', // Change method if needed (POST/GET)
+                    data: deliveryModel,
+                    dataType: 'text',
+                    success: function (response) {
+                        // Handle success response
+                        // You can add further actions here after successful acceptance
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error('Error picking up delivery:', error);
+                    }
+                });
+            });
+        });
+    </script>
+}
 

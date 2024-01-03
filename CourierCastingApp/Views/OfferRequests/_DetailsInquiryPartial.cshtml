@@ -91,7 +91,14 @@
                         @Model.WeekendDeliveryDisplay()
                     </dd>
                 </dl>
-
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(m => m.InquiryStatus)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(m => m.InquiryStatus);
+                    </dd>
+                </dl>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Zamknij</button>

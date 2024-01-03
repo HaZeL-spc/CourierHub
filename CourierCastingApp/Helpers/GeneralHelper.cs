@@ -14,6 +14,16 @@ namespace CourierCastingApp.Helpers
         Cancelled = 3
     }
 
+    public enum InquiryStatus
+    {
+        [Display(Name = "Nie rozatrzone")]
+        NotConsidered = 0,
+        [Display(Name = "Zaakceptowane")]
+        Accepted = 1,
+        [Display(Name = "Odrzucone")]
+        Rejected = 2
+    }
+
     public enum ClientStatus
     {
         [Display(Name = "Klient")]

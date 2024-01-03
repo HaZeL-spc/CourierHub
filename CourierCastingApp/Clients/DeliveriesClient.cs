@@ -1,13 +1,19 @@
 ﻿using CourierCastingApp.DataTransferObjects;
 using CourierCastingApp.Helpers;
 using CourierCastingApp.Models;
+using Humanizer;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace CourierCastingApp.Clients
 {
     public interface IDeliveriesClient
     {
+        public Task<Result> CancelDelivery(DeliveryDto ddto);
+        public Task<Result> DeliverDelivery(DeliveryDto ddto);
         public Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries();
         public Task<Result<DeliveryDto>> GetDelivery(int deliveryId);
+        public Task<Result> PickUpDelivery(DeliveryDto dto);
     }
 
     public class DeliveriesClient : IDeliveriesClient
@@ -19,6 +25,70 @@ namespace CourierCastingApp.Clients
             _client = client;
             _configuration = configuration;
         }
+
+        public async Task<Result> CancelDelivery(DeliveryDto ddto)
+        {
+            try
+            {
+                var uri = _configuration.GetSection("DefaultURIs")["CancelDeliveryURI"];
+
+                var jsonInquiry = JsonConvert.SerializeObject(ddto);
+                var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync(uri, content);
+
+                return response.IsSuccessStatusCode
+                    ? Result.Ok()
+                    : Result.Fail($"Failed to deliver delivery. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail($"Error: {ex.Message}");
+            }
+        }
+
+        public async Task<Result> DeliverDelivery(DeliveryDto ddto)
+        {
+            try
+            {
+                var uri = _configuration.GetSection("DefaultURIs")["DeliverDeliveryURI"];
+
+                var jsonInquiry = JsonConvert.SerializeObject(ddto);
+                var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync(uri, content);
+
+                return response.IsSuccessStatusCode
+                    ? Result.Ok()
+                    : Result.Fail($"Failed to deliver delivery. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail($"Error: {ex.Message}");
+            }
+        }
+
+        public async Task<Result> PickUpDelivery(DeliveryDto dto)
+        {
+            try
+            {
+                var uri = _configuration.GetSection("DefaultURIs")["PickUpDeliveryURI"];
+
+                var jsonInquiry = JsonConvert.SerializeObject(dto);
+                var content = new StringContent(jsonInquiry, Encoding.UTF8, "application/json");
+
+                var response = await _client.PostAsync(uri, content);
+
+                return response.IsSuccessStatusCode
+                    ? Result.Ok()
+                    : Result.Fail($"Failed to pick up delivery. Status code: {response.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                return Result.Fail($"Error: {ex.Message}");
+            }
+        }
+
         public async Task<Result<IEnumerable<DeliveryDto>>> GetAllDeliveries()
         {
             var response = await _client.GetAsync(_configuration.GetSection("DefaultURIs")["DeliveriesURI"]!);

@@ -4,6 +4,7 @@ using CourierAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourierAPI.Migrations
 {
     [DbContext(typeof(DeliverymanCastingDbContext))]
-    partial class DeliverymanCastingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207223557_inquirystatus")]
+    partial class inquirystatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,42 +36,6 @@ namespace CourierAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("CourierAPI.Data.Courier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Cena")
-                        .HasColumnType("float");
-
-                    b.Property<double>("CenaHighPriority")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("CzyWeekend")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("End")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxPackages")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Start")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Workload")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Couriers");
                 });
 
             modelBuilder.Entity("CourierAPI.Data.Delivery", b =>
@@ -120,9 +87,6 @@ namespace CourierAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CourierId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
@@ -158,8 +122,6 @@ namespace CourierAPI.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourierId");
 
                     b.HasIndex("EndLocationId");
 
@@ -230,10 +192,6 @@ namespace CourierAPI.Migrations
 
             modelBuilder.Entity("CourierAPI.Data.Inquiry", b =>
                 {
-                    b.HasOne("CourierAPI.Data.Courier", "Courier")
-                        .WithMany()
-                        .HasForeignKey("CourierId");
-
                     b.HasOne("CourierAPI.Data.Location", "EndLocation")
                         .WithMany()
                         .HasForeignKey("EndLocationId")
@@ -243,8 +201,6 @@ namespace CourierAPI.Migrations
                         .WithMany()
                         .HasForeignKey("StartLocationId")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Courier");
 
                     b.Navigation("EndLocation");
 

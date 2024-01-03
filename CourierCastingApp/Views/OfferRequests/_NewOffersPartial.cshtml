@@ -11,7 +11,7 @@
         <tbody>
             @foreach (InquiryVm inquiry in Model)
             {
-                @await Html.PartialAsync("_InquiryPartial", inquiry)
+                if (inquiry.InquiryStatus == 0) @await Html.PartialAsync("_InquiryPartial", inquiry)
             }
         </tbody>
     </table>

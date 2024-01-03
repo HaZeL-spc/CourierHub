@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using CourierAPI.Data;
+using CourierAPI.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CourierAPI.Models
 {
@@ -14,11 +16,18 @@ namespace CourierAPI.Models
 		bool HightPriority,
 		bool WeekendDelivery,
 		CourierDTO Courier,
-		int Id
-		)
+		int Id,
+        InquiryStatus InquiryStatus = InquiryStatus.NotConsidered
+        )
 	{
 		public InquiryDTO() : this(0, 0, 0, 0, DateTime.MinValue, "", new LocationDTO(), new LocationDTO(), false, false, new CourierDTO(), 0)
 		{
+		}
+
+		public InquiryDTO(Inquiry i) : this(i.DimX, i.DimY, i.DimZ, i.Weight, i.DeliveryDate, i.Name, new LocationDTO(i.StartLocation!), new LocationDTO(i.EndLocation!),
+			i.HightPriority, i.WeekendDelivery, new CourierDTO(i.Courier), i.Id, i.InquiryStatus)
+		{
+
 		}
 	}
 }

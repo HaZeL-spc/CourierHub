@@ -1,5 +1,7 @@
 ﻿using CourierCastingApp.DataTransferObjects;
+using CourierCastingApp.Helpers;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace CourierCastingApp.ViewModels
 {
@@ -18,6 +20,7 @@ namespace CourierCastingApp.ViewModels
             Name = dto.Name;
             if (dto.Id != -1)
                 Id = dto.Id;
+            InquiryStatus = dto.InquiryStatus;
         }
 
         public InquiryVm()
@@ -47,6 +50,8 @@ namespace CourierCastingApp.ViewModels
         public bool WeekendDelivery { get; set; }
         [Display(Name = "Id zapytania")]
         public int Id { get; set; }
+        [Display(Name = "Status zapytania")]
+        public InquiryStatus InquiryStatus { get; set; }
 
         public string HightPriorityDisplay()
         {
@@ -56,6 +61,12 @@ namespace CourierCastingApp.ViewModels
         public string WeekendDeliveryDisplay()
         {
             return WeekendDelivery ? "Tak" : "Nie";
+        }
+
+        public string Data()
+        {
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            return data;
         }
     }
 }

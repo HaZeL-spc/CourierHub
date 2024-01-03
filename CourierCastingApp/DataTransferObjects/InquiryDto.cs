@@ -1,4 +1,6 @@
-﻿using CourierCastingApp.Models.Forms;
+﻿using CourierCastingApp.Helpers;
+using CourierCastingApp.Models.Forms;
+using System.ComponentModel.DataAnnotations;
 
 namespace CourierCastingApp.DataTransferObjects;
 
@@ -14,7 +16,8 @@ public record InquiryDto(
 	bool HightPriority,
 	bool WeekendDelivery,
     CourierDto Courier,
-    int Id
+    int Id,
+    InquiryStatus InquiryStatus = InquiryStatus.NotConsidered
 )
 {
 	// Your custom constructor
@@ -30,7 +33,8 @@ public record InquiryDto(
 	HightPriority: model.HighPriority,
 	Courier: new CourierDto(),
 	WeekendDelivery: model.WeekendDelivery,
-	Id: 2
+    InquiryStatus: InquiryStatus.NotConsidered,
+    Id: 2
 )
 	{
 		if (courier != null)

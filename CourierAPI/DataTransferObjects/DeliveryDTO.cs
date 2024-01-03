@@ -10,4 +10,9 @@ public record DeliveryDto(
     LocationDTO EndLocation, 
     DateTime PickedUptime, 
     DateTime FinishedDeliveryTime, 
-    int ClientId);
+    int ClientId)
+{
+    public DeliveryDto() : this(0, 0, "", new LocationDTO(), new LocationDTO(), DateTime.Now, 
+        DateTime.Now, 0)
+    { }
+}
