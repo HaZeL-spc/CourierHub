@@ -20,6 +20,7 @@ public partial class CourierCastingAppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<SessionHistory>().HasIndex(s => s.Id);
         OnModelCreatingPartial(modelBuilder);
     }
 

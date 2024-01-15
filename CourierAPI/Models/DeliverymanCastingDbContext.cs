@@ -24,6 +24,12 @@ public partial class DeliverymanCastingDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Delivery>().HasIndex(d => d.Id); 
+        modelBuilder.Entity<Location>().HasIndex(l => l.Id); 
+        modelBuilder.Entity<Client>().HasIndex(c => c.Id);
+        modelBuilder.Entity<Inquiry>().HasIndex(i => i.Id); 
+        modelBuilder.Entity<Courier>().HasIndex(c => c.Id);
+
         modelBuilder
             .ApplyConfiguration(new DeliveryConfiguration())
             .ApplyConfiguration(new InquiryConfiguration())
