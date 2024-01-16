@@ -6,10 +6,18 @@
 
 <div><h1>Oferty</h1></div>
 
-
 <div class="container">
     <div class="row">
         <div class="col">
+            <form method="get" asp-action="Index">
+                <label for="startLocationFilter">Filtruj lokalizację początkową:</label>
+                <input type="text" name="startLocationFilter" value="@ViewBag.StartLocationFilter" />
+
+                <label for="endLocationFilter">Filtruj lokalizację docelową:</label>
+                <input type="text" name="endLocationFilter" value="@ViewBag.EndLocationFilter" />
+
+                <button type="submit">Zastosuj filtry</button>
+            </form>
             @await Html.PartialAsync("_NewOffersPartial", Model.Inquiries)
         </div>
         <div class="col">
