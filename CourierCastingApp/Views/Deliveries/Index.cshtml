@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<DeliveryVm>
+
 @{
     ViewData["Title"] = "Dostawy";
 }
@@ -7,6 +8,22 @@
 <h2>Lista twoich dostaw:</h2>
 
 <div class="row">
+    <form method="get" asp-action="Index">
+        <label for="startLocationFilter">Filtruj lokalizację początkową:</label>
+        <input type="text" name="startLocationFilter" value="@ViewBag.StartLocationFilter" />
+
+        <label for="endLocationFilter">Filtruj lokalizację docelową:</label>
+        <input type="text" name="endLocationFilter" value="@ViewBag.EndLocationFilter" />
+
+        <label for="sortOrder">Sortowanie:</label>
+        <select name="sortOrder">
+            <option value="newest">Najnowsze</option>
+            <option value="oldest">Najstarsze</option>
+        </select>
+
+        <button type="submit">Zastosuj filtry i sortowanie</button>
+    </form>
+
     <table class="table">
         <thead>
             <tr>

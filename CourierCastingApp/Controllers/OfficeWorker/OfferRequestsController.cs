@@ -25,22 +25,36 @@ namespace CourierCastingApp.Controllers.OfficeWorker
             _inquiryRepository = inquiryRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string startLocationFilter, string endLocationFilter)
         {
-
             var resultInquiries = await _inquiryRepository.GetAllInquiries();
             var resultDeliveries = await _deliveryRepository.GetAllDeliveries();
+
             if (resultDeliveries.Success && resultInquiries.Success)
             {
                 ICollection<DeliveryVm> deliveries = resultDeliveries.Value.Select(d => new DeliveryVm(d)).ToList();
                 ICollection<InquiryVm> inquiries = resultInquiries.Value.Select(i => new InquiryVm(i)).ToList();
 
+                if (!string.IsNullOrEmpty(startLocationFilter))
+                {
+                    inquiries = inquiries.Where(i => i.StartLocation.City.Contains(startLocationFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+                    deliveries = deliveries.Where(d => d.StartLocation.City.Contains(startLocationFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
+
+                if (!string.IsNullOrEmpty(endLocationFilter))
+                {
+                    inquiries = inquiries.Where(i => i.EndLocation.City.Contains(endLocationFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+                    deliveries = deliveries.Where(d => d.EndLocation.City.Contains(endLocationFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+                }
+
                 return View((inquiries, deliveries));
             }
-
             else
+            {
                 return NotFound();
+            }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AcceptInquiry([FromBody] InquiryVm i)

@@ -1,37 +1,46 @@
-﻿<div><h1>Order History</h1></div>
+﻿<div>
+    <h1>Order History</h1>
+</div>
 @model ICollection<DeliveryVm>
 @{
     ViewData["Title"] = "Order History";
 }
 
 <div class="row">
-    <tbody>
-        <div>
-            <h1>Dostarczone:</h1>
-            <table cellspacing="0">
-                @foreach (var delivery in Model)
-                {
-                    if (delivery.Status == CourierCastingApp.Helpers.DeliveryStatus.Delivered)
-                    {
-                        @await Html.PartialAsync("_DeliveryPartial", delivery)
-                    }
-                }
-            </table>
-        </div>
-        <div>
-            <h1>W trakcie:</h1>
-            <table cellspacing="0">
-                @foreach (var delivery in Model)
-                {
-                    if (delivery.Status != CourierCastingApp.Helpers.DeliveryStatus.Delivered)
-                    {
-                        @await Html.PartialAsync("_DeliveryPartial", delivery)
-                    }
-                }
-            </table>
-        </div>
-    </tbody>
+    <form method="get" asp-action="Index">
+        <label for="startLocationFilter">Filtruj po lokalizacji startowej:</label>
+        <input type="text" name="startLocationFilter" value="@ViewBag.StartLocationFilter" />
+
+        <label for="endLocationFilter">Filtruj po lokalizacji końcowej:</label>
+        <input type="text" name="endLocationFilter" value="@ViewBag.EndLocationFilter" />
+
+        <label for="sortOrder">Sortowanie:</label>
+        <select name="sortOrder">
+            <option value="newest">Najnowsze</option>
+            <option value="oldest">Najstarsze</option>
+        </select>
+
+        <button type="submit">Zastosuj filtry i sortowanie</button>
+    </form>
+
+    <div class="col-md-6">
+        <!-- Half width for "Dostarczone" column -->
+        <h1>Dostarczone:</h1>
+        <table cellspacing="0">
+            @foreach (var delivery in Model.Where(d => d.Status == CourierCastingApp.Helpers.DeliveryStatus.Delivered))
+            {
+                @await Html.PartialAsync("_DeliveryPartial", delivery)
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <!-- Half width for "W trakcie" column -->
+        <h1>W trakcie:</h1>
+        <table cellspacing="0">
+            @foreach (var delivery in Model.Where(d => d.Status != CourierCastingApp.Helpers.DeliveryStatus.Delivered))
+            {
+                @await Html.PartialAsync("_DeliveryPartial", delivery)
+            }
+        </table>
+    </div>
 </div>
-
-
-
